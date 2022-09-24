@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\shaders\Opengl_projet\glad.c" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DrawingPolygonManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DrawingPolygonManager.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw.h" />

@@ -2,7 +2,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
@@ -15,7 +14,8 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Shape.h"
-#include "Triangle.h"
+
+#include "DrawingPolygonManager.h"
 
 #include <iostream>
 
@@ -68,7 +68,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
+    //glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
@@ -101,6 +101,10 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     const char* glsl_version = "#version 330";
     ImGui_ImplOpenGL3_Init(glsl_version);
+
+
+    // make Drawing manager singleton
+    DrawingPolygonManager*  drawingPolygonManager = DrawingPolygonManager::getInstance();
     // build and compile our shader zprogram
     // ------------------------------------
     Shader lightingShader("basic_lighting.vert", "basic_lighting.frag");
@@ -111,6 +115,7 @@ int main()
     // ------------------------------------------------------------------
 
     Triangle triangle;
+    drawingPolygonManager->addPolygon(triangle);
 
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
@@ -123,7 +128,6 @@ int main()
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
 
     unsigned int diffuseMap = loadTexture("C:/Users/GTHR/container2.png");
     unsigned int specularMap = loadTexture("C:/Users/GTHR/specular.png");
@@ -191,21 +195,8 @@ int main()
         shapeShader.setMat4("projection", projection);
         shapeShader.setMat4("view", view);
         shapeShader.setMat4("model", model);
-        
-        triangle.render();
-       
-        // also draw the lamp object
-        lightCubeShader.use();
-        lightCubeShader.setMat4("projection", projection);
-        lightCubeShader.setMat4("view", view);
 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        lightCubeShader.setMat4("model", model);
-
-        glBindVertexArray(lightCubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        drawingPolygonManager->renderAll();
 
         ImGui::Begin("My name is Window, ImGUI window");
         ImGui::Text("Hello there adventurer!");

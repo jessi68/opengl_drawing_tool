@@ -38,7 +38,6 @@ void Shape::initiliazeVertexBufferDatas()
 Shape::~Shape() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
-	cout << "is it called?";
 }
 
 Shape::Shape()
@@ -48,6 +47,8 @@ Shape::Shape()
 
 void Shape::render()
 {
+	//cout << "is this called?"<< endl;
+//	cout << this->totalVerticeNumber << endl;
 	glBindVertexArray(this->vao);
 	glDrawArrays(GL_TRIANGLES, 0, this->totalVerticeNumber);
 }
