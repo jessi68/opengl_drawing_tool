@@ -14,11 +14,12 @@ protected:
 	unsigned int totalVerticeNumber; 
 	float * vertices;
 	vector<unsigned int> vertexAttributeNumbers;
+	void initiliazeVertexBufferDatas();
 public:
 	Shape(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
 	Shape();
 	~Shape();
-	void initiliazeVertexBufferDatas();
-	virtual void render();
+
+	void render();
 };
 

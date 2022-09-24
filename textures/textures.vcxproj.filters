@@ -63,6 +63,9 @@
     <ClCompile Include="Shape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -104,19 +107,28 @@
     <ClInclude Include="Shape.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic_lighting.frag">
-      <Filter>소스 파일</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="basic_lighting.vert">
-      <Filter>소스 파일</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="light_cube.frag">
-      <Filter>소스 파일</Filter>
+      <Filter>shaders</Filter>
     </None>
     <None Include="light_cube.vert">
-      <Filter>소스 파일</Filter>
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="2d_shape.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="2d_shape.vert">
+      <Filter>shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

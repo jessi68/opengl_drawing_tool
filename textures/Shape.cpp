@@ -32,12 +32,6 @@ void Shape::initiliazeVertexBufferDatas()
 		startValue += vertexAttributeNumber;
 		index += 1;
 	}
-}
-
-
-
-Shape::Shape()
-{
 
 }
 
@@ -45,6 +39,11 @@ Shape::~Shape() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 	cout << "is it called?";
+}
+
+Shape::Shape()
+{
+
 }
 
 void Shape::render()
