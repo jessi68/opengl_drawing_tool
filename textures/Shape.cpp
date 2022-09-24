@@ -4,7 +4,16 @@ using namespace std;
 
 Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
-	cout << sizeof(vertices) << "\n";
+	this->vertices = vertices;
+	this->eachAttributeNumber = eachAttributeNumber;
+	this->totalVerticeNumber = totalVerticeNumber;
+	this->vertexAttributeNumbers = vertexAttributeNumbers;
+	this->initiliazeVertexBufferDatas();
+}
+
+void Shape::initiliazeVertexBufferDatas()
+{
+
 	glGenVertexArrays(1, &(this->vao));
 	glGenBuffers(1, &(this->vbo));
 
@@ -13,24 +22,29 @@ Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsi
 
 	glBindVertexArray(this->vao);
 
-	this->eachAttributeNumber = eachAttributeNumber;
-	this->totalVerticeNumber = totalVerticeNumber;
-
 	int index = 0;
 	int eachAttributeSize = eachAttributeNumber * sizeof(float);
 	int startValue = 0;
 
 	for (auto vertexAttributeNumber : vertexAttributeNumbers) {
-		glVertexAttribPointer(index, vertexAttributeNumber, GL_FLOAT, GL_FALSE, eachAttributeSize, (void *) (startValue * sizeof(float)));
+		glVertexAttribPointer(index, vertexAttributeNumber, GL_FLOAT, GL_FALSE, eachAttributeSize, (void*)(startValue * sizeof(float)));
 		glEnableVertexAttribArray(index);
 		startValue += vertexAttributeNumber;
 		index += 1;
 	}
 }
 
+
+
+Shape::Shape()
+{
+
+}
+
 Shape::~Shape() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+	cout << "is it called?";
 }
 
 void Shape::render()

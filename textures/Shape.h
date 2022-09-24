@@ -7,14 +7,18 @@ using namespace std;
 
 class Shape
 {
-private:
+protected:
 	unsigned int vao;
 	unsigned int vbo;
 	unsigned int eachAttributeNumber;
-	unsigned int totalVerticeNumber;
+	unsigned int totalVerticeNumber; 
+	float * vertices;
+	vector<unsigned int> vertexAttributeNumbers;
 public:
 	Shape(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
+	Shape();
 	~Shape();
+	void initiliazeVertexBufferDatas();
 	virtual void render();
 };
 
