@@ -10,7 +10,7 @@ class DrawingPolygonManager
 private:
 	static DrawingPolygonManager* drawingManager;
 	DrawingPolygonManager();
-	vector<Shape> polygonsToRender;
+	vector<Shape*> polygonsToRender;
 	static void Destroy();
 public:
 	/**
@@ -20,7 +20,7 @@ public:
 	static DrawingPolygonManager* getInstance();
 	DrawingPolygonManager(DrawingPolygonManager& other) = delete;
 	void operator= (const DrawingPolygonManager &) = delete;
-	void addPolygon(const Shape & shape);
+	void addPolygon(Shape * shape);
 	void renderAll();
 };
 

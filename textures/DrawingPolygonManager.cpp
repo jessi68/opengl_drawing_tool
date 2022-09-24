@@ -13,10 +13,11 @@ DrawingPolygonManager* DrawingPolygonManager::getInstance() {
 }
 
 void DrawingPolygonManager::Destroy() {
+    
     delete DrawingPolygonManager::drawingManager;
 }
 
-void DrawingPolygonManager::addPolygon(const Shape &shape)
+void DrawingPolygonManager::addPolygon(Shape * shape)
 {
     polygonsToRender.push_back(shape);
 }
@@ -25,7 +26,7 @@ void DrawingPolygonManager::renderAll()
 {  
     int size = polygonsToRender.size();
     for (int i = 0; i < size; i++) {
-        polygonsToRender[i].render();
+        polygonsToRender[i]->render();
     }
 }
 

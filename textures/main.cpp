@@ -19,6 +19,7 @@
 
 #include <iostream>
 
+void makePolygonUI(DrawingPolygonManager* drawingPolygonManager);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -69,10 +70,10 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     //glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
+    //glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+   
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -90,9 +91,7 @@ int main()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
+  
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsLight();
@@ -114,8 +113,8 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
 
-    Triangle triangle;
-    drawingPolygonManager->addPolygon(triangle);
+    //Triangle  * triangle = new Triangle;
+    //drawingPolygonManager->addPolygon(triangle);
 
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
@@ -163,6 +162,8 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+       
+        makePolygonUI(drawingPolygonManager);
         
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
@@ -197,10 +198,7 @@ int main()
         shapeShader.setMat4("model", model);
 
         drawingPolygonManager->renderAll();
-
-        ImGui::Begin("My name is Window, ImGUI window");
-        ImGui::Text("Hello there adventurer!");
-        ImGui::End();
+      
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -225,6 +223,17 @@ int main()
     // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
+}
+
+void makePolygonUI(DrawingPolygonManager * drawingPolygonManager) {
+    ImGui::Begin("My name is Window, ImGUI window");
+    if (ImGui::Button("triangle")) {
+        drawingPolygonManager->addPolygon(new Triangle);
+    }
+    if (ImGui::Button("rectangle")) {
+
+    }
+    ImGui::End();
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
