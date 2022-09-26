@@ -113,8 +113,6 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
 
-    //Triangle  * triangle = new Triangle;
-    //drawingPolygonManager->addPolygon(triangle);
 
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
@@ -163,6 +161,7 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
        
+        // pass singleton as parameter 
         makePolygonUI(drawingPolygonManager);
         
         // be sure to activate shader when setting uniforms/drawing objects
@@ -228,7 +227,7 @@ int main()
 void makePolygonUI(DrawingPolygonManager * drawingPolygonManager) {
     ImGui::Begin("My name is Window, ImGUI window");
     if (ImGui::Button("triangle")) {
-        drawingPolygonManager->addPolygon(new Triangle);
+        drawingPolygonManager->addPolygon(new Triangle());
     }
     if (ImGui::Button("rectangle")) {
 

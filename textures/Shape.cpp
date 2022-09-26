@@ -1,10 +1,11 @@
 #include "Shape.h"
 #include <iostream>
+#define INF 10000
 using namespace std;
 
 Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
-	this->vertices = vertices;
+	this->verticeAttributes = vertices;
 	this->eachAttributeNumber = eachAttributeNumber;
 	this->totalVerticeNumber = totalVerticeNumber;
 	this->vertexAttributeNumbers = vertexAttributeNumbers;
@@ -18,7 +19,7 @@ void Shape::initiliazeVertexBufferDatas()
 	glGenBuffers(1, &(this->vbo));
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * eachAttributeNumber * totalVerticeNumber, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * eachAttributeNumber * totalVerticeNumber, verticeAttributes, GL_STATIC_DRAW);
 
 	glBindVertexArray(this->vao);
 
@@ -38,6 +39,22 @@ void Shape::initiliazeVertexBufferDatas()
 Shape::~Shape() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+}
+
+bool Shape::isInnerPolygon(float x, float y)
+{
+	bool isInside = false;
+	
+	if (this->totalVerticeNumber < 3) {
+		isInside;
+	}
+
+	for (int i = 0, int j = this->totalVerticeNumber - 1; i < this->totalVerticeNumber; j = i++)
+	{
+		
+	}
+
+	return isInside;
 }
 
 Shape::Shape()

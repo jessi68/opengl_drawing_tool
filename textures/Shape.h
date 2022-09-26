@@ -12,14 +12,15 @@ protected:
 	unsigned int vbo;
 	unsigned int eachAttributeNumber;
 	unsigned int totalVerticeNumber; 
-	float * vertices;
+	float * verticeAttributes;
+	vector<pair<float, float>> points;
 	vector<unsigned int> vertexAttributeNumbers;
 	void initiliazeVertexBufferDatas();
 public:
 	Shape(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
 	Shape();
 	~Shape();
-
+	bool isInnerPolygon(float x, float y);
 	void render();
 };
 

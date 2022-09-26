@@ -13,7 +13,11 @@ DrawingPolygonManager* DrawingPolygonManager::getInstance() {
 }
 
 void DrawingPolygonManager::Destroy() {
-    
+    vector<Shape*> polygonsToRender = DrawingPolygonManager::drawingManager->polygonsToRender;
+    for (auto polygons : polygonsToRender) {
+        delete polygons;
+    }
+
     delete DrawingPolygonManager::drawingManager;
 }
 

@@ -69,6 +69,9 @@
     <ClCompile Include="DrawingPolygonManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PolygonAlgorithm.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -114,6 +117,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="DrawingPolygonManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PolygonAlgorithm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

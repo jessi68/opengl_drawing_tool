@@ -1,6 +1,6 @@
-//#include "Shape.h"
 #include <vector>
 #include "Triangle.h"
+
 
 using namespace std;
 
@@ -20,9 +20,6 @@ public:
 	static DrawingPolygonManager* getInstance();
 	DrawingPolygonManager(DrawingPolygonManager& other) = delete;
 	void operator= (const DrawingPolygonManager &) = delete;
-	void addPolygon(Shape * shape);
+	void addPolygon(Shape* shape);
 	void renderAll();
 };
-
-//
-

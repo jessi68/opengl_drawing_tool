@@ -6,6 +6,7 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 color;
 
+
 out vec3 FragPos;
 out vec3 originalColor;
 
