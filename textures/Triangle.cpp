@@ -19,10 +19,18 @@ Triangle::Triangle()
 		randomValueX - 0.2, randomValueY + 0.8, 0,
         randomValueX, randomValueY, 0
 	};
+
+	// 사각형 만들게 되면 이 로직 함수 따로 만들어야 할수도?
+	for (int i = 0; i < 9; i+= 3) {
+		// local variable point is coopied to points vector and vector allocates memory heap so it remains even after constructor function finishes
+		this->points.push_back(Point(vertices[i], vertices[i + 1]));
+	}
+
 	this->verticeAttributes = vertices;
 	this->vertexAttributeNumbers.push_back(3);
 	this->eachAttributeNumber = 3;
 	this->totalVerticeNumber = 3;
+	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
 
 	this->initiliazeVertexBufferDatas();
 }

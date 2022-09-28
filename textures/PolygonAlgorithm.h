@@ -2,14 +2,9 @@
 // static class is different from singleton that singleton can be passed as parameter. 
 #include <algorithm>
 #include "Shape.h"
+#include "Point.h"
 
 using namespace std;
-
-struct Point
-{
-    int x;
-    int y;
-};
 
 static class PolygonAlgorithm
 {
