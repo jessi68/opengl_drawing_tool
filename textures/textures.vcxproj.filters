@@ -22,6 +22,12 @@
     <Filter Include="헤더 파일\imgui">
       <UniqueIdentifier>{a7cf0441-7885-4fbd-8b52-15e0af400fd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\polygon">
+      <UniqueIdentifier>{1b784b5e-17b8-447a-8fe8-074757bfe6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\polygon">
+      <UniqueIdentifier>{2c06fb16-89dd-434c-9eff-2366923d61b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,17 +66,17 @@
     <ClCompile Include="imgui_tables.cpp">
       <Filter>소스 파일\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Triangle.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="DrawingPolygonManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PolygonAlgorithm.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>소스 파일\polygon</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>소스 파일\polygon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,12 +116,6 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>헤더 파일\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Triangle.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="DrawingPolygonManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -123,7 +123,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>헤더 파일\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>헤더 파일\polygon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

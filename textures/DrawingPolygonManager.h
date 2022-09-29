@@ -1,6 +1,6 @@
 #include <vector>
 #include "Triangle.h"
-
+#include "Shader.h"
 
 using namespace std;
 
@@ -11,6 +11,7 @@ private:
 	static DrawingPolygonManager* drawingManager;
 	DrawingPolygonManager();
 	vector<Shape*> polygonsToRender;
+	Shader basicShader;
 	static void Destroy();
 public:
 	/**

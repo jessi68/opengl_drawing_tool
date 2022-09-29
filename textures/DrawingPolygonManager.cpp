@@ -2,6 +2,7 @@
 
 DrawingPolygonManager::DrawingPolygonManager()
 {
+    this->basicShader = Shader("2d_shape.vert", "2d_shape.frag");
 }
 
 DrawingPolygonManager* DrawingPolygonManager::getInstance() {

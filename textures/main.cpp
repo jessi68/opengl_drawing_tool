@@ -21,6 +21,7 @@
 
 void makePolygonUI(DrawingPolygonManager* drawingPolygonManager);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
@@ -69,6 +70,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     //glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetScrollCallback(window, scroll_callback);
 
@@ -290,6 +292,17 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double xpos, ypos;
+        //getting cursor position
+        glfwGetCursorPos(window, &xpos, &ypos);
+        cout << "xpos " << xpos << " " << ypos << endl;
+    }
+       
 }
 
 // utility function for loading a 2D texture from file

@@ -6,6 +6,11 @@
 #include <sstream>
 #include <iostream>
 
+Shader::Shader()
+{
+    Shader("vertex_shader.vert", "frag_shader.frag");
+}
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
     // 1. retrieve the vertex/fragment source code from filePath
