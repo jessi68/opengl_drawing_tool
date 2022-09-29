@@ -7,10 +7,10 @@ Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsi
 {
 	this->verticeAttributes = vertices;
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
-	/*for (int i = 0; i < this->totalCoordinateNumber; i += totalVerticeNumber) {
+	for (int i = 0; i < this->totalCoordinateNumber; i += totalVerticeNumber) {
 		// local variable point is coopied to points vector and vector allocates memory heap so it remains even after constructor function finishes
 		this->points.push_back(Point(vertices[i], vertices[i + 1]));
-	}*/
+	}
 
 	this->eachAttributeNumber = eachAttributeNumber;
 	this->totalVerticeNumber = totalVerticeNumber;

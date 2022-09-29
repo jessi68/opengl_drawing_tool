@@ -12,7 +12,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
-#include "Camera.h"
 #include "Shape.h"
 
 #include "DrawingPolygonManager.h"
@@ -22,17 +21,13 @@
 void makePolygonUI(DrawingPolygonManager* drawingPolygonManager);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow* window);
+
 unsigned int loadTexture(const char* path);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-// camera
-Camera camera(glm::vec3(-2.0f, 0.0f, 6.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -108,10 +103,7 @@ int main()
     DrawingPolygonManager*  drawingPolygonManager = DrawingPolygonManager::getInstance();
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader lightingShader("basic_lighting.vert", "basic_lighting.frag");
-    Shader lightCubeShader("light_cube.vert", "light_cube.frag");
-    Shader shapeShader("2d_shape.vert", "2d_shape.frag");
-
+  
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
 
@@ -131,17 +123,8 @@ int main()
     unsigned int diffuseMap = loadTexture("C:/Users/GTHR/container2.png");
     unsigned int specularMap = loadTexture("C:/Users/GTHR/specular.png");
 
-    // shader configuration
-    // --------------------
-    lightingShader.use();
-    lightingShader.setInt("material.diffuse", 0);
-    lightingShader.setInt("material.specular", 1);
-
-    shapeShader.use();
-    shapeShader.setVec3("color", 0.0f, 0.0f, 1.0f);
-
-    // render loop
-    // -----------
+    drawingPolygonManager->activateBasicShader();
+  
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -149,10 +132,6 @@ int main()
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
-        // input
-        // -----
-        processInput(window);
 
         // render
         // ------
@@ -165,42 +144,10 @@ int main()
        
         // pass singleton as parameter 
         makePolygonUI(drawingPolygonManager);
-        
-        // be sure to activate shader when setting uniforms/drawing objects
-        lightingShader.use();
- 
-        lightingShader.setVec3("light.position", lightPos);
-        lightingShader.setVec3("viewPos", camera.Position);
-   
-        lightingShader.setFloat("material.shininess", 32.0f);
-        
-        lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-        lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
-        lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-     
-        // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        lightingShader.setMat4("projection", projection);
-        lightingShader.setMat4("view", view);
 
-        // world transformation
-        glm::mat4 model = glm::mat4(1.0f);
-        lightingShader.setMat4("model", model);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
-
-        shapeShader.use();
-        shapeShader.setMat4("projection", projection);
-        shapeShader.setMat4("view", view);
-        shapeShader.setMat4("model", model);
-
+        drawingPolygonManager->activateBasicShader();
         drawingPolygonManager->renderAll();
       
-
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -239,20 +186,6 @@ void makePolygonUI(DrawingPolygonManager * drawingPolygonManager) {
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-}
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
@@ -263,37 +196,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
-    float xpos = static_cast<float>(xposIn);
-    float ypos = static_cast<float>(yposIn);
-
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera.ProcessMouseMovement(xoffset, yoffset);
-}
-
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(static_cast<float>(yoffset));
-}
-
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -301,8 +203,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         //getting cursor position
         glfwGetCursorPos(window, &xpos, &ypos);
         cout << "xpos " << xpos << " " << ypos << endl;
-    }
-       
+    }       
 }
 
 // utility function for loading a 2D texture from file

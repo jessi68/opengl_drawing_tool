@@ -6,9 +6,11 @@
 #include <sstream>
 #include <iostream>
 
+using namespace std;
+
 Shader::Shader()
 {
-    Shader("vertex_shader.vert", "frag_shader.frag");
+    Shader("2d_shape.vert", "2d_shape.frag");
 }
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
@@ -49,6 +51,9 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
+    cout << vertexPath << " vertex path" << endl;
+    cout << fragmentPath << " fragment path" << endl;
+
     this->checkCompileErrors(vertex, "VERTEX");
     // fragment Shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
