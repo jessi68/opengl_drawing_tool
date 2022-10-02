@@ -5,6 +5,23 @@
 #define INF 10000
 using namespace std;
 
+void Polygon::copyFrom(const Polygon& src)
+{
+	this->verticeAttributes = src.verticeAttributes;
+	this->totalCoordinateNumber = src.totalCoordinateNumber;
+	this->eachAttributeNumber = src.eachAttributeNumber;
+	this->totalVerticeNumber = src.totalVerticeNumber;
+	this->vertexAttributeNumbers = src.vertexAttributeNumbers;
+	this->color = src.color;
+	this->points = src.points;
+	this->matrix = src.matrix;
+}
+
+Polygon::Polygon(const Polygon& src)
+{
+	copyFrom(src);
+}
+
 Polygon::Polygon(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
 	this->verticeAttributes = vertices;
@@ -19,7 +36,7 @@ Polygon::Polygon(float vertices[], vector<unsigned int> vertexAttributeNumbers, 
 	this->vertexAttributeNumbers = vertexAttributeNumbers;
 	this->color = glm::vec3(0, 0, 1);
 	//  °íÄ¡±â  
-	this->matrix = glm::mat4x4();
+	this->matrix = glm::mat4(1.0f);
 	this->initiliazeVertexBufferDatas();
 }
 
@@ -50,6 +67,16 @@ void Polygon::initiliazeVertexBufferDatas()
 Polygon::~Polygon() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+}
+
+Polygon& Polygon::operator=(const Polygon& polygon)
+{
+	if (this == &polygon) {
+		return *this;
+	}
+	copyFrom(polygon);
+
+	return *this;
 }
 
 bool Polygon::isIncludePoint(Point point)

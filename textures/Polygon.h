@@ -27,6 +27,9 @@ public:
 	Polygon(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
 	Polygon();
 	virtual ~Polygon();
+	void copyFrom(const Polygon& src);
+	Polygon(const Polygon& src);
+	Polygon& operator=(const Polygon& polygon);
 	bool isIncludePoint(Point point);
 	void setShaderValue(Shader* shader);
 	void render();
