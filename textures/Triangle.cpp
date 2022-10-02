@@ -33,13 +33,14 @@ Triangle::Triangle()
 	
 }
 
-Triangle::Triangle(const Triangle& src)
+Triangle::Triangle(const Triangle& src) : Polygon(src)
 {
-	Polygon::Polygon(src);
+	
 }
 
 Triangle& Triangle::operator=(const Triangle& triangle)
 {
 	Polygon::operator=(triangle);
+	return *this;
 }
 
