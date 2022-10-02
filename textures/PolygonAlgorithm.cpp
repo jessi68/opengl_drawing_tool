@@ -1,4 +1,8 @@
 #include "PolygonAlgorithm.h"
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
 // Define Infinite (Using INT_MAX caused overflow problems)
 #define INF 10000
 
@@ -14,9 +18,9 @@ bool PolygonAlgorithm::onSegment(Point p, Point q, Point r)
 
 int PolygonAlgorithm::orientation(Point p, Point q, Point r)
 {
-	int externalProductValue = 	(p.x - q.x) * (r.y - q.y) - (p.y - q.y) * (r.x - q.x) ;
+	float externalProductValue = 	(p.x - q.x) * (r.y - q.y) - (p.y - q.y) * (r.x - q.x) ;
 
-	if (externalProductValue == 0) return 0; // collinear
+	if (abs(externalProductValue) < 0.0001 ) return 0; // collinear
 	return (externalProductValue > 0) ? 1 : 2; // 1: counterclockwise, 2: clockwise
 }
 
@@ -49,7 +53,7 @@ bool PolygonAlgorithm::isIntersect(Point p1, Point q1, Point p2, Point q2)
     return false; // Doesn't fall in any of the above cases
 }
 
-bool PolygonAlgorithm::isInside(Point polygon[], int vertexNumber, Point p)
+bool PolygonAlgorithm::isInside(vector<Point> polygon, int vertexNumber, Point p)
 {
     // There must be at least 3 vertices in polygon[]
     if (vertexNumber < 3) return false;
@@ -76,14 +80,16 @@ bool PolygonAlgorithm::isInside(Point polygon[], int vertexNumber, Point p)
 
         // Check if the line segment from 'p' to 'extreme' intersects
         // with the line segment from 'polygon[i]' to 'polygon[next]'
+
         if (isIntersect(polygon[i], polygon[next], p, extreme))
         {
             // If the point 'p' is collinear with line segment 'i-next',
             // then check if it lies on segment. If it lies, return true,
             // otherwise false
-            if (orientation(polygon[i], p, polygon[next]) == 0)
+            if (orientation(polygon[i], p, polygon[next]) == 0) {
+                cout << i << " x " << p.x << " yyyy " << p.y << next << endl;
                 return onSegment(polygon[i], p, polygon[next]);
-
+            } 
             count++;
         }
         i = next;
@@ -92,7 +98,8 @@ bool PolygonAlgorithm::isInside(Point polygon[], int vertexNumber, Point p)
     // Reduce the count by decrease amount
     // as these points would have been added twice
     count -= decrease;
-
+    
+    cout << count << " count" << endl;
     // Return true if count is odd, false otherwise
     return count & 1; // Same as (count%2 == 1)
 }

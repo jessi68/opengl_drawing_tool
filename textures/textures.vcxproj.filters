@@ -66,13 +66,13 @@
     <ClCompile Include="imgui_tables.cpp">
       <Filter>소스 파일\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="DrawingPolygonManager.cpp">
+    <ClCompile Include="PolygonManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PolygonAlgorithm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
+    <ClCompile Include="Polygon.cpp">
       <Filter>소스 파일\polygon</Filter>
     </ClCompile>
     <ClCompile Include="Triangle.cpp">
@@ -116,7 +116,7 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>헤더 파일\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="DrawingPolygonManager.h">
+    <ClInclude Include="PolygonManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PolygonAlgorithm.h">
@@ -125,7 +125,7 @@
     <ClInclude Include="Point.h">
       <Filter>헤더 파일\polygon</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.h">
+    <ClInclude Include="Polygon.h">
       <Filter>헤더 파일\polygon</Filter>
     </ClInclude>
     <ClInclude Include="Triangle.h">

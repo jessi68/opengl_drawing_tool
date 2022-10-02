@@ -1,9 +1,11 @@
-#include "Shape.h"
+#include "Polygon.h"
 #include <iostream>
+#include "PolygonAlgorithm.h"
+
 #define INF 10000
 using namespace std;
 
-Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
+Polygon::Polygon(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
 	this->verticeAttributes = vertices;
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
@@ -15,10 +17,13 @@ Shape::Shape(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsi
 	this->eachAttributeNumber = eachAttributeNumber;
 	this->totalVerticeNumber = totalVerticeNumber;
 	this->vertexAttributeNumbers = vertexAttributeNumbers;
+	this->color = glm::vec3(0, 0, 1);
+	//  °íÄ¡±â  
+	this->matrix = glm::mat4x4();
 	this->initiliazeVertexBufferDatas();
 }
 
-void Shape::initiliazeVertexBufferDatas()
+void Polygon::initiliazeVertexBufferDatas()
 {
 
 	glGenVertexArrays(1, &(this->vao));
@@ -42,17 +47,32 @@ void Shape::initiliazeVertexBufferDatas()
 
 }
 
-Shape::~Shape() {
+Polygon::~Polygon() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }
 
-Shape::Shape()
+bool Polygon::isIncludePoint(Point point)
+{
+	cout << "point value  x: " << point.x << "y: " << point.y << endl;
+	for (int i = 0; i < 3; i += 1) {
+		cout << "triangle point value  x: " << this->points[i].x << "y:" << this->points[i].y << endl;
+	}
+	
+	return PolygonAlgorithm::isInside(this->points, this->totalVerticeNumber, point);
+}
+
+void Polygon::setShaderValue(Shader* shader)
+{
+	shader->setVec3("color", color);
+}
+
+Polygon::Polygon()
 {
 
 }
 
-void Shape::render()
+void Polygon::render()
 {
 	//cout << "is this called?"<< endl;
 //	cout << this->totalVerticeNumber << endl;

@@ -3,10 +3,12 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Point.h"
+#include "Shader.h"
+#include <glm/glm.hpp>
 
 using namespace std;
 
-class Shape
+class Polygon
 {
 protected:
 	unsigned int vao;
@@ -15,13 +17,18 @@ protected:
 	unsigned int totalVerticeNumber; 
 	unsigned int totalCoordinateNumber;
 	float * verticeAttributes;
+	glm::vec3 color;
+	glm::mat4 matrix;
 	vector<Point> points;
 	vector<unsigned int> vertexAttributeNumbers;
 	void initiliazeVertexBufferDatas();
+
 public:
-	Shape(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
-	Shape();
-	~Shape();
+	Polygon(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
+	Polygon();
+	virtual ~Polygon();
+	bool isIncludePoint(Point point);
+	void setShaderValue(Shader* shader);
 	void render();
 };
 

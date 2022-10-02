@@ -12,13 +12,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
-#include "Shape.h"
+#include "Polygon.h"
 
-#include "DrawingPolygonManager.h"
+#include "PolygonManager.h"
 
 #include <iostream>
 
-void makePolygonUI(DrawingPolygonManager* drawingPolygonManager);
+void makePolygonUI(PolygonManager* polygonManager);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
@@ -35,6 +35,8 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+PolygonManager* polygonManager;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -80,6 +82,8 @@ int main()
         return -1;
     }
 
+    // make Drawing manager singleton
+    polygonManager = PolygonManager::getInstance();
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
@@ -98,9 +102,7 @@ int main()
     const char* glsl_version = "#version 330";
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-
-    // make Drawing manager singleton
-    DrawingPolygonManager*  drawingPolygonManager = DrawingPolygonManager::getInstance();
+   
     // build and compile our shader zprogram
     // ------------------------------------
   
@@ -123,7 +125,7 @@ int main()
     unsigned int diffuseMap = loadTexture("C:/Users/GTHR/container2.png");
     unsigned int specularMap = loadTexture("C:/Users/GTHR/specular.png");
 
-    drawingPolygonManager->activateBasicShader();
+    polygonManager->activateBasicShader();
   
     while (!glfwWindowShouldClose(window))
     {
@@ -143,10 +145,10 @@ int main()
         ImGui::NewFrame();
        
         // pass singleton as parameter 
-        makePolygonUI(drawingPolygonManager);
+        makePolygonUI(polygonManager);
 
-        drawingPolygonManager->activateBasicShader();
-        drawingPolygonManager->renderAll();
+        //polygonManager->activateBasicShader();
+        polygonManager->renderAll();
       
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -173,7 +175,7 @@ int main()
     return 0;
 }
 
-void makePolygonUI(DrawingPolygonManager * drawingPolygonManager) {
+void makePolygonUI(PolygonManager * drawingPolygonManager) {
     ImGui::Begin("My name is Window, ImGUI window");
     if (ImGui::Button("triangle")) {
         drawingPolygonManager->addPolygon(new Triangle());
@@ -196,14 +198,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+Point changeFromWindowToWorld(double x, double y) {
+    return Point(x * 2.0 / SCR_WIDTH - 1, (SCR_HEIGHT - y) * 2 / SCR_HEIGHT - 1);
+}
+
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        double xpos, ypos;
+        double x, y;
         //getting cursor position
-        glfwGetCursorPos(window, &xpos, &ypos);
-        cout << "xpos " << xpos << " " << ypos << endl;
-    }       
+        glfwGetCursorPos(window, &x, &y);
+        Point currentPoint = changeFromWindowToWorld(x, y);
+        polygonManager->selectPolygon(currentPoint);
+        
+    }
 }
 
 // utility function for loading a 2D texture from file

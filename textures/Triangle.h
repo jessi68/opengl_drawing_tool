@@ -1,10 +1,10 @@
-#include "Shape.h"
+#include "Polygon.h"
 
-class Triangle: public Shape
+class Triangle: public Polygon
 {
 public:
 	Triangle(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber);
 	Triangle();
-	//virtual void render();
+	Triangle& operator=(const Triangle& triangle);
 };
 

@@ -48,11 +48,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     // 2. compile shaders
     unsigned int vertex, fragment;
     // vertex shader
+
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
-    cout << vertexPath << " vertex path" << endl;
-    cout << fragmentPath << " fragment path" << endl;
+   
 
     this->checkCompileErrors(vertex, "VERTEX");
     // fragment Shader
