@@ -21,6 +21,7 @@
 void makePolygonUI(PolygonManager* polygonManager);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void processInput(GLFWwindow* window);
 
 unsigned int loadTexture(const char* path);
 
@@ -33,6 +34,7 @@ float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
 // timing
+float speed = 0.1f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
@@ -68,6 +70,9 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+  
+
+
     //glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetScrollCallback(window, scroll_callback);
 
@@ -82,6 +87,7 @@ int main()
         return -1;
     }
 
+   
     // make Drawing manager singleton
     polygonManager = PolygonManager::getInstance();
     // configure global opengl state
@@ -109,7 +115,6 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
 
-
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
     unsigned int lightCubeVAO;
     unsigned int VBO1;
@@ -134,6 +139,10 @@ int main()
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        // input
+       // -----
+        processInput(window);
 
         // render
         // ------
@@ -188,6 +197,29 @@ void makePolygonUI(PolygonManager * drawingPolygonManager) {
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow* window)
+{
+    float dx = 0, dy = 0;
+    float distance = deltaTime * speed;
+
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        dy = distance;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        dy = -1 * distance;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        dx = -1 * distance;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        dx = distance;
+
+     polygonManager->processKeyboard(dx, dy);
+        
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
@@ -209,6 +241,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         //getting cursor position
         glfwGetCursorPos(window, &x, &y);
         Point currentPoint = changeFromWindowToWorld(x, y);
+        cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
         polygonManager->selectPolygon(currentPoint);
         
     }

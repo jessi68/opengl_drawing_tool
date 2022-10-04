@@ -1,6 +1,7 @@
 #include "Polygon.h"
 #include <iostream>
 #include "PolygonAlgorithm.h"
+#include <cmath>
 
 #define INF 10000
 using namespace std;
@@ -81,10 +82,8 @@ Polygon& Polygon::operator=(const Polygon& polygon)
 
 bool Polygon::isIncludePoint(Point point)
 {
-	cout << "point value  x: " << point.x << "y: " << point.y << endl;
-	for (int i = 0; i < 3; i += 1) {
-		cout << "triangle point value  x: " << this->points[i].x << "y:" << this->points[i].y << endl;
-	}
+	// 도형을 선택하는게 도형 움직이는 것보다 덜 자주 일어난다고 가정
+   // 그렇기에 isIncludePoint 에서 points 업데이트 하는게 도형 움직일 때마다 points 업데이트 하는 것보다 효율적
 	
 	return PolygonAlgorithm::isInside(this->points, this->totalVerticeNumber, point);
 }
@@ -92,6 +91,7 @@ bool Polygon::isIncludePoint(Point point)
 void Polygon::setShaderValue(Shader* shader)
 {
 	shader->setVec3("color", color);
+	shader->setMat4("transformation", this->matrix);
 }
 
 Polygon::Polygon()
@@ -101,8 +101,37 @@ Polygon::Polygon()
 
 void Polygon::render()
 {
-	//cout << "is this called?"<< endl;
-//	cout << this->totalVerticeNumber << endl;
 	glBindVertexArray(this->vao);
 	glDrawArrays(GL_TRIANGLES, 0, this->totalVerticeNumber);
 }
+
+void Polygon::translation(float dx, float dy)
+{
+	glm::mat4 transMatrix = glm::mat4(1.0f);
+	transMatrix[3][0] = dx;
+	transMatrix[3][1] = dy;
+	this->matrix = transMatrix * this->matrix;
+}
+
+void Polygon::scale(float sx, float sy)
+{
+	glm::mat4 scaleMatrix = glm::mat4(1.0f);
+	scaleMatrix[0][0] = sx;
+	scaleMatrix[1][1] = sy;
+	this->matrix = scaleMatrix * this->matrix;
+}
+
+void Polygon::rotate(float angle)
+{
+	glm::mat4 rotationMatrix = glm::mat4(1.0f);
+	float cosValue = cos(angle);
+	float sinValue = sin(angle);
+
+	rotationMatrix[0][0] = cosValue;
+	rotationMatrix[1][0] = -1 * sinValue;
+	rotationMatrix[0][1] = sinValue;
+	rotationMatrix[1][1] = cosValue;
+
+	this->matrix = rotationMatrix * this->matrix;
+}
+

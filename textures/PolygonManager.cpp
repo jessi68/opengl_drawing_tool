@@ -6,6 +6,7 @@ PolygonManager::PolygonManager()
     this->basicShader = new Shader("2d_shape.vert", "2d_shape.frag");
     this->polygonNumber = 0;
     this->selectedPolygonIndex = -1;
+    
 }
 
 PolygonManager* PolygonManager::getInstance() {
@@ -37,7 +38,6 @@ void PolygonManager::renderAll()
     for (int i = 0; i < this->polygonNumber; i++) {
         if (this->selectedPolygonIndex == i) {
             basicShader->setVec3("color", 1.0, 1.0, 0.0);
-
             polygonsToRender[i]->render();
         }
         polygonsToRender[i]->setShaderValue(this->basicShader);
@@ -64,6 +64,11 @@ void PolygonManager::selectPolygon(Point point)
     
 }
 
-
+void PolygonManager::processKeyboard(float dx, float dy)
+{
+    if (this->selectedPolygonIndex != -1) {
+          polygonsToRender[this->selectedPolygonIndex]->translation(dx, dy);
+    }
+}
 
 PolygonManager* PolygonManager::drawingManager = nullptr;

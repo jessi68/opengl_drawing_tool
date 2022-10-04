@@ -28,4 +28,5 @@ public:
 	void renderAll();
 	void activateBasicShader();
 	void selectPolygon(Point point);
+	void processKeyboard(float dx, float dy);
 };

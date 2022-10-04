@@ -99,7 +99,6 @@ bool PolygonAlgorithm::isInside(vector<Point> polygon, int vertexNumber, Point p
     // as these points would have been added twice
     count -= decrease;
     
-
     cout << count << " count" << endl;
     // Return true if count is odd, false otherwise
     return count & 1; // Same as (count%2 == 1)
