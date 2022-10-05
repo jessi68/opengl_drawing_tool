@@ -50,7 +50,6 @@ void PolygonManager::renderAll()
 void PolygonManager::selectPolygon(Point point)
 {
     for (int i = 0; i < this->polygonNumber; i++) {
-        
         if (this->polygonsToRender[i]->isIncludePoint(point)) {
             this->selectedPolygonIndex = i;
             break;

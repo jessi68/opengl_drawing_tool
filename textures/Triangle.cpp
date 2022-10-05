@@ -2,18 +2,18 @@
 #include <glm/glm.hpp>
 #include <stdlib.h>
 
-Triangle::Triangle(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, this->totalVerticeNumber)
+Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, this->totalVerticeNumber)
 {
 	this->totalVerticeNumber = 3;
 }
 
 Triangle::Triangle() 
 {
-	float vertices[] = {
+	float *  vertices = new float[9] {
 		// vertex  
 		0.0, 0.0, 0,
 		0.2, 0.8, 0,
-        0.4, 0.0, 0
+		0.4, 0.0, 0
 	};
 
 	// 사각형 만들게 되면 이 로직 함수 따로 만들어야 할수도?

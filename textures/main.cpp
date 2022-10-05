@@ -35,7 +35,7 @@ bool firstMouse = true;
 bool isUIClicked = false;
 
 // timing
-float speed = 0.1f;
+float speed = 0.3f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 

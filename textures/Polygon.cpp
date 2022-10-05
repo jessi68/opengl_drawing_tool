@@ -24,7 +24,7 @@ Polygon::Polygon(const Polygon& src)
 	copyFrom(src);
 }
 
-Polygon::Polygon(float vertices[], vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
+Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
 	this->verticeAttributes = vertices;
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
@@ -68,6 +68,7 @@ void Polygon::initiliazeVertexBufferDatas()
 }
 
 Polygon::~Polygon() {
+	delete[] this->verticeAttributes;
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }
@@ -92,13 +93,15 @@ bool Polygon::isIncludePoint(Point point)
 
 	if (!this->isUpdated) {
 		for (int i = 0; i < this->totalCoordinateNumber; i += this->eachAttributeNumber) {
-
-			result = this->matrix * glm::vec4(this->verticeAttributes[i], this->verticeAttributes[i + 1], 0.0, 1.0);
 			currentIndex = i / this->eachAttributeNumber;
+			cout << "vertex attributes" << this->verticeAttributes[i] << " " << this->verticeAttributes[i + 1] << endl;
+			result = this->matrix * glm::vec4(this->verticeAttributes[i], this->verticeAttributes[i + 1], 0.0, 1.0);
+			cout << "result" << result.x << " " << result.y << endl;
 			this->points[currentIndex].x = result.x;
 			this->points[currentIndex].y = result.y;
 		}
-		this->isUpdated = false;
+		cout << endl;
+		this->isUpdated = true;
 	}
 	
 	return PolygonAlgorithm::isInside(this->points, this->totalVerticeNumber, point);
