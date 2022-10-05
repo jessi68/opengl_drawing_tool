@@ -58,10 +58,17 @@ void PolygonManager::selectPolygon(Point point)
     
 }
 
-void PolygonManager::processKeyboard(float dx, float dy)
+void PolygonManager::processTranslation(float dx, float dy)
 {
     if (this->selectedPolygonIndex != -1) {
           polygonsToRender[this->selectedPolygonIndex]->translation(dx, dy);
+    }
+}
+
+void PolygonManager::processScaling(float sx, float sy)
+{
+    if (this->selectedPolygonIndex != -1) {
+        polygonsToRender[this->selectedPolygonIndex]->scale(sx, sy);
     }
 }
 

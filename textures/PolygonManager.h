@@ -27,5 +27,6 @@ public:
 	void addPolygon(Polygon* shape);
 	void renderAll();
 	void selectPolygon(Point point);
-	void processKeyboard(float dx, float dy);
+	void processTranslation(float dx, float dy);
+	void processScaling(float sx, float sy);
 };

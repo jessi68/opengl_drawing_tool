@@ -19,6 +19,7 @@
 #include <iostream>
 
 void makePolygonUI(PolygonManager* polygonManager);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void processInput(GLFWwindow* window);
@@ -33,6 +34,7 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 bool isUIClicked = false;
+bool isMouseClicked = false;
 
 // timing
 float speed = 0.3f;
@@ -69,10 +71,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
-  
-
-
-    //glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
     //glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
@@ -184,6 +183,9 @@ void processInput(GLFWwindow* window)
     float dx = 0, dy = 0;
     float distance = deltaTime * speed;
 
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+        polygonManager->processScaling(0.8, 0.8);
+    }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
@@ -196,7 +198,7 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         dx = distance;
 
-     polygonManager->processKeyboard(dx, dy);
+     polygonManager->processTranslation(dx, dy);
         
 }
 
@@ -213,21 +215,60 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 Point changeFromWindowToWorld(double x, double y) {
-    return Point(x * 2.0 / SCR_WIDTH - 1, (SCR_HEIGHT - y) * 2 / SCR_HEIGHT - 1);
+    return Point(x * 2 / SCR_WIDTH - 1, (SCR_HEIGHT - y) * 2 / SCR_HEIGHT - 1);
 }
+
+
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        isMouseClicked = true;
         double x, y;
         //getting cursor position
         glfwGetCursorPos(window, &x, &y);
         Point currentPoint = changeFromWindowToWorld(x, y);
         cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
         polygonManager->selectPolygon(currentPoint);
-        
     }
 
+    if (button == GLFW_MOUSE_BUTTON_LEFT and action == GLFW_RELEASE) {
+        isMouseClicked = false;
+    }
+
+   
+
+}
+
+// glfw: whenever the mouse moves, this callback is called
+// -------------------------------------------------------
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    if (isMouseClicked) {
+        float xpos = static_cast<float>(xposIn);
+        float ypos = static_cast<float>(yposIn);
+
+        if (firstMouse)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            firstMouse = false;
+        }
+
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+        lastX = xpos;
+        lastY = ypos;
+
+        cout << "xoffset " << xoffset << endl;
+        cout << "yoffset" << yoffset << endl;
+        Point point = changeFromWindowToWorld(xoffset, yoffset);
+
+        cout << "x" << point.x << endl;
+        cout << "y" << point.y << endl;
+        polygonManager->processScaling(xoffset * 2/ SCR_WIDTH, yoffset * 2 / SCR_HEIGHT);
+    }
 }
 
 // utility function for loading a 2D texture from file

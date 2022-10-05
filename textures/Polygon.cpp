@@ -136,8 +136,12 @@ void Polygon::translation(float dx, float dy)
 void Polygon::scale(float sx, float sy)
 {
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-	scaleMatrix[0][0] = sx;
-	scaleMatrix[1][1] = sy;
+	
+	scaleMatrix[0][0] = 1 + sx;
+	scaleMatrix[1][1] = 1 + sy;
+
+	cout << "sx" << scaleMatrix[0][0] << endl;
+	cout << "sy" << scaleMatrix[1][1] << endl;
 	this->matrix = scaleMatrix * this->matrix;
 	this->isUpdated = false;
 }
