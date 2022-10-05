@@ -29,6 +29,7 @@ Triangle::Triangle()
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
 	this->color = glm::vec3(0, 0, 1);
 	this->matrix = glm::mat4(1.0f);
+	this->isUpdated = true;
 	this->initiliazeVertexBufferDatas();
 	
 }

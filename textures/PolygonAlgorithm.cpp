@@ -87,7 +87,6 @@ bool PolygonAlgorithm::isInside(vector<Point> polygon, int vertexNumber, Point p
             // then check if it lies on segment. If it lies, return true,
             // otherwise false
             if (orientation(polygon[i], p, polygon[next]) == 0) {
-                cout << i << " x " << p.x << " yyyy " << p.y << next << endl;
                 return onSegment(polygon[i], p, polygon[next]);
             } 
             count++;
@@ -98,9 +97,7 @@ bool PolygonAlgorithm::isInside(vector<Point> polygon, int vertexNumber, Point p
     // Reduce the count by decrease amount
     // as these points would have been added twice
     count -= decrease;
-    
 
-    cout << count << " count" << endl;
     // Return true if count is odd, false otherwise
     return count & 1; // Same as (count%2 == 1)
 }

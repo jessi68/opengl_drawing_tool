@@ -16,6 +16,7 @@ void Polygon::copyFrom(const Polygon& src)
 	this->color = src.color;
 	this->points = src.points;
 	this->matrix = src.matrix;
+	this->isUpdated = true;
 }
 
 Polygon::Polygon(const Polygon& src)
@@ -38,6 +39,7 @@ Polygon::Polygon(float vertices[], vector<unsigned int> vertexAttributeNumbers, 
 	this->color = glm::vec3(0, 0, 1);
 	//  고치기  
 	this->matrix = glm::mat4(1.0f);
+	this->isUpdated = true;
 	this->initiliazeVertexBufferDatas();
 }
 
@@ -85,6 +87,20 @@ bool Polygon::isIncludePoint(Point point)
 	// 도형을 선택하는게 도형 움직이는 것보다 덜 자주 일어난다고 가정
    // 그렇기에 isIncludePoint 에서 points 업데이트 하는게 도형 움직일 때마다 points 업데이트 하는 것보다 효율적
 	
+	glm::vec4 result;
+	int currentIndex = 0;
+
+	if (!this->isUpdated) {
+		for (int i = 0; i < this->totalCoordinateNumber; i += this->eachAttributeNumber) {
+
+			result = this->matrix * glm::vec4(this->verticeAttributes[i], this->verticeAttributes[i + 1], 0.0, 1.0);
+			currentIndex = i / this->eachAttributeNumber;
+			this->points[currentIndex].x = result.x;
+			this->points[currentIndex].y = result.y;
+		}
+		this->isUpdated = false;
+	}
+	
 	return PolygonAlgorithm::isInside(this->points, this->totalVerticeNumber, point);
 }
 
@@ -111,6 +127,7 @@ void Polygon::translation(float dx, float dy)
 	transMatrix[3][0] = dx;
 	transMatrix[3][1] = dy;
 	this->matrix = transMatrix * this->matrix;
+	this->isUpdated = false;
 }
 
 void Polygon::scale(float sx, float sy)
@@ -119,6 +136,7 @@ void Polygon::scale(float sx, float sy)
 	scaleMatrix[0][0] = sx;
 	scaleMatrix[1][1] = sy;
 	this->matrix = scaleMatrix * this->matrix;
+	this->isUpdated = false;
 }
 
 void Polygon::rotate(float angle)
@@ -133,5 +151,6 @@ void Polygon::rotate(float angle)
 	rotationMatrix[1][1] = cosValue;
 
 	this->matrix = rotationMatrix * this->matrix;
+	this->isUpdated = false;
 }
 

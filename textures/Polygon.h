@@ -17,6 +17,7 @@ protected:
 	unsigned int totalVerticeNumber; 
 	unsigned int totalCoordinateNumber;
 	float * verticeAttributes;
+	bool isUpdated;
 	glm::vec3 color;
 	glm::mat4 matrix;
 	vector<Point> points;

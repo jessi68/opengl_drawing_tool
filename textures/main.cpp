@@ -32,6 +32,7 @@ const unsigned int SCR_HEIGHT = 600;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+bool isUIClicked = false;
 
 // timing
 float speed = 0.1f;
@@ -45,8 +46,6 @@ glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
-
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -114,23 +113,10 @@ int main()
   
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-
-    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-    unsigned int lightCubeVAO;
-    unsigned int VBO1;
-    glGenVertexArrays(1, &lightCubeVAO);
-    glBindVertexArray(lightCubeVAO);
-    glGenBuffers(1, &VBO1);
-    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
-    glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+;
 
     unsigned int diffuseMap = loadTexture("C:/Users/GTHR/container2.png");
     unsigned int specularMap = loadTexture("C:/Users/GTHR/specular.png");
-
-    polygonManager->activateBasicShader();
   
     while (!glfwWindowShouldClose(window))
     {
@@ -171,13 +157,7 @@ int main()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-
-    glDeleteVertexArrays(1, &lightCubeVAO);
-    glDeleteBuffers(1, &VBO1);
-    //glDeleteBuffers(1, &VBO);
-
+    
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
@@ -187,7 +167,9 @@ int main()
 void makePolygonUI(PolygonManager * drawingPolygonManager) {
     ImGui::Begin("My name is Window, ImGUI window");
     if (ImGui::Button("triangle")) {
+        
         drawingPolygonManager->addPolygon(new Triangle());
+
     }
     if (ImGui::Button("rectangle")) {
 
@@ -245,6 +227,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         polygonManager->selectPolygon(currentPoint);
         
     }
+
 }
 
 // utility function for loading a 2D texture from file

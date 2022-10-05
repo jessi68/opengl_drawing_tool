@@ -27,37 +27,32 @@ void PolygonManager::Destroy() {
     delete PolygonManager::drawingManager;
 }
 
-void PolygonManager::addPolygon(Polygon * shape)
+void PolygonManager::addPolygon(Polygon * polygon)
 {
-    polygonsToRender.push_back(shape);
+    polygonsToRender.push_back(polygon);
     this->polygonNumber += 1;
 }
 
 void PolygonManager::renderAll()
 {  
     for (int i = 0; i < this->polygonNumber; i++) {
+        polygonsToRender[i]->setShaderValue(this->basicShader);
         if (this->selectedPolygonIndex == i) {
             basicShader->setVec3("color", 1.0, 1.0, 0.0);
-            polygonsToRender[i]->render();
         }
-        polygonsToRender[i]->setShaderValue(this->basicShader);
         this->basicShader->use();
         polygonsToRender[i]->render();
+        
+       
     }
-}
-
-void PolygonManager::activateBasicShader() {
-    basicShader->setVec3("color", 0.0f, 0.0f, 1.0f);
-    basicShader->use();
 }
 
 void PolygonManager::selectPolygon(Point point)
 {
     for (int i = 0; i < this->polygonNumber; i++) {
-
+        
         if (this->polygonsToRender[i]->isIncludePoint(point)) {
             this->selectedPolygonIndex = i;
-            cout << "selected" << endl;
             break;
         }
     }
