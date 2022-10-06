@@ -18,7 +18,14 @@
 
 #include <iostream>
 
+enum TRANSFORMATION_MODE
+{
+    ROTATION,
+    SCALE
+};
+
 void makePolygonUI(PolygonManager* polygonManager);
+void makeTransformationUI();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -27,6 +34,7 @@ void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path);
 
 // settings
+TRANSFORMATION_MODE transformationMode = SCALE;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
@@ -137,9 +145,12 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-       
+        ImGui::SetNextWindowSize(ImVec2(100, 150));
+        ImGui::Begin("2d polygon");
         // pass singleton as parameter 
         makePolygonUI(polygonManager);
+        makeTransformationUI();
+        ImGui::End();
 
         //polygonManager->activateBasicShader();
         polygonManager->renderAll();
@@ -164,7 +175,7 @@ int main()
 }
 
 void makePolygonUI(PolygonManager * drawingPolygonManager) {
-    ImGui::Begin("My name is Window, ImGUI window");
+   
     if (ImGui::Button("triangle")) {
         
         drawingPolygonManager->addPolygon(new Triangle());
@@ -173,7 +184,20 @@ void makePolygonUI(PolygonManager * drawingPolygonManager) {
     if (ImGui::Button("rectangle")) {
 
     }
-    ImGui::End();
+   
+}
+
+void makeTransformationUI() {
+    //ImGui::SetCursorPos(ImVec2(110, 30));
+    
+    ImGui::Text("transformation");
+    if (ImGui::Button("rotation")) {
+        transformationMode = ROTATION;
+    }
+    if (ImGui::Button("scale")) {
+        transformationMode = SCALE;
+    }
+  
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -263,11 +287,15 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
         cout << "xoffset " << xoffset << endl;
         cout << "yoffset" << yoffset << endl;
-        Point point = changeFromWindowToWorld(xoffset, yoffset);
 
-        cout << "x" << point.x << endl;
-        cout << "y" << point.y << endl;
-        polygonManager->processScaling(xoffset * 2/ SCR_WIDTH, yoffset * 2 / SCR_HEIGHT);
+        float normalizedX = xoffset * 2 / SCR_WIDTH;
+        float normalizedY = yoffset * 2 / SCR_HEIGHT;
+        if (transformationMode == SCALE) {
+            polygonManager->processScaling(normalizedX, normalizedY);
+        }
+        else {
+            polygonManager->processRotation(normalizedX + normalizedY);
+        }
     }
 }
 

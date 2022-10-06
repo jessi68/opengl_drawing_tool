@@ -72,4 +72,11 @@ void PolygonManager::processScaling(float sx, float sy)
     }
 }
 
+void PolygonManager::processRotation(float angle)
+{
+    if (this->selectedPolygonIndex != -1) {
+        polygonsToRender[this->selectedPolygonIndex]->rotate(angle);
+    }
+}
+
 PolygonManager* PolygonManager::drawingManager = nullptr;

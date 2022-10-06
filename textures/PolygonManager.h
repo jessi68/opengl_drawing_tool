@@ -29,4 +29,5 @@ public:
 	void selectPolygon(Point point);
 	void processTranslation(float dx, float dy);
 	void processScaling(float sx, float sy);
+	void processRotation(float angle);
 };
