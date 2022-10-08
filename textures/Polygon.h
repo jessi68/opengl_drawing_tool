@@ -16,6 +16,7 @@ protected:
 	unsigned int eachAttributeNumber;
 	unsigned int totalVerticeNumber; 
 	unsigned int totalCoordinateNumber;
+	unsigned int totalPointNumber;
 	float * verticeAttributes;
 	bool isUpdated;
 	glm::vec3 color;
@@ -38,6 +39,7 @@ public:
 	void translation(float dx, float dy);
 	void scale(float sx, float sy);
 	void rotate(float angle);
+	glm::mat4 getMatrix();
 
 };
 

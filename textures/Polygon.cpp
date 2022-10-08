@@ -40,6 +40,7 @@ Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, 
 	//  °íÄ¡±â  
 	this->matrix = glm::mat4(1.0f);
 	this->isUpdated = true;
+	this->totalPointNumber = this->points.size();
 	this->initiliazeVertexBufferDatas();
 }
 
@@ -90,21 +91,21 @@ bool Polygon::isIncludePoint(Point point)
 	
 	glm::vec4 result;
 	int currentIndex = 0;
+	int vertexAttributeIndex;
 
 	if (!this->isUpdated) {
-		for (int i = 0; i < this->totalCoordinateNumber; i += this->eachAttributeNumber) {
-			currentIndex = i / this->eachAttributeNumber;
-			cout << "vertex attributes" << this->verticeAttributes[i] << " " << this->verticeAttributes[i + 1] << endl;
-			result = this->matrix * glm::vec4(this->verticeAttributes[i], this->verticeAttributes[i + 1], 0.0, 1.0);
-			cout << "result" << result.x << " " << result.y << endl;
+		for (int currentIndex = 0; currentIndex < totalPointNumber; currentIndex++) {
+			vertexAttributeIndex = currentIndex * this->eachAttributeNumber;
+
+			result = this->matrix * glm::vec4(this->verticeAttributes[vertexAttributeIndex], this->verticeAttributes[vertexAttributeIndex + 1], 0.0, 1.0);
 			this->points[currentIndex].x = result.x;
 			this->points[currentIndex].y = result.y;
 		}
-		cout << endl;
+		
 		this->isUpdated = true;
 	}
 	
-	return PolygonAlgorithm::isInside(this->points, this->totalVerticeNumber, point);
+	return PolygonAlgorithm::isInside(this->points, this->totalPointNumber, point);
 }
 
 void Polygon::setShaderValue(Shader* shader)
@@ -120,7 +121,7 @@ Polygon::Polygon()
 
 void Polygon::render()
 {
-	glBindVertexArray(this->vao);
+	
 	glDrawArrays(GL_TRIANGLES, 0, this->totalVerticeNumber);
 }
 
@@ -135,13 +136,12 @@ void Polygon::translation(float dx, float dy)
 
 void Polygon::scale(float sx, float sy)
 {
+	cout << sx << "  sx" << sy << " sy " << endl;
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
 	
 	scaleMatrix[0][0] = 1 + sx;
 	scaleMatrix[1][1] = 1 + sy;
 
-	cout << "sx" << scaleMatrix[0][0] << endl;
-	cout << "sy" << scaleMatrix[1][1] << endl;
 	this->matrix = scaleMatrix * this->matrix;
 	this->isUpdated = false;
 }
@@ -159,5 +159,10 @@ void Polygon::rotate(float angle)
 
 	this->matrix = rotationMatrix * this->matrix;
 	this->isUpdated = false;
+}
+
+glm::mat4 Polygon::getMatrix()
+{
+	return this->matrix;
 }
 

@@ -13,6 +13,7 @@
 
 #include "Shader.h"
 #include "Polygon.h"
+#include "Rectangle.h"
 
 #include "PolygonManager.h"
 
@@ -182,7 +183,7 @@ void makePolygonUI(PolygonManager * drawingPolygonManager) {
 
     }
     if (ImGui::Button("rectangle")) {
-
+        drawingPolygonManager->addPolygon(new Rectangle());
     }
    
 }

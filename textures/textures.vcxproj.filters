@@ -78,6 +78,9 @@
     <ClCompile Include="Triangle.cpp">
       <Filter>소스 파일\polygon</Filter>
     </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>소스 파일\polygon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -129,6 +132,9 @@
       <Filter>헤더 파일\polygon</Filter>
     </ClInclude>
     <ClInclude Include="Triangle.h">
+      <Filter>헤더 파일\polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
       <Filter>헤더 파일\polygon</Filter>
     </ClInclude>
   </ItemGroup>
