@@ -25,6 +25,11 @@ enum TRANSFORMATION_MODE
     SCALE
 };
 
+enum DIMENSION {
+    TWO,
+    THREE
+};
+
 void makePolygonUI(PolygonManager* polygonManager);
 void makeTransformationUI();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -36,6 +41,8 @@ unsigned int loadTexture(const char* path);
 
 // settings
 TRANSFORMATION_MODE transformationMode = SCALE;
+DIMENSION dimension = TWO;
+
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
@@ -146,8 +153,8 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        ImGui::SetNextWindowSize(ImVec2(100, 150));
-        ImGui::Begin("2d polygon");
+        ImGui::SetNextWindowSize(ImVec2(100, 180));
+        ImGui::Begin("polygon");
         // pass singleton as parameter 
         makePolygonUI(polygonManager);
         makeTransformationUI();
@@ -177,13 +184,28 @@ int main()
 
 void makePolygonUI(PolygonManager * drawingPolygonManager) {
    
-    if (ImGui::Button("triangle")) {
-        
-        drawingPolygonManager->addPolygon(new Triangle());
-
+    if (ImGui::Button("change coordinate")) {
+        if (dimension == TWO) {
+            dimension = THREE;
+        }
+        else {
+            dimension = TWO;
+        }
     }
-    if (ImGui::Button("rectangle")) {
-        drawingPolygonManager->addPolygon(new Rectangle());
+    if (dimension == TWO) {
+        if (ImGui::Button("triangle")) {
+
+            drawingPolygonManager->addPolygon(new Triangle());
+
+        }
+        if (ImGui::Button("rectangle")) {
+            drawingPolygonManager->addPolygon(new Rectangle());
+        }
+    }
+    else {
+        if (ImGui::Button("cube")) {
+
+        }
     }
    
 }
@@ -242,8 +264,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 Point changeFromWindowToWorld(double x, double y) {
     return Point(x * 2 / SCR_WIDTH - 1, (SCR_HEIGHT - y) * 2 / SCR_HEIGHT - 1);
 }
-
-
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {

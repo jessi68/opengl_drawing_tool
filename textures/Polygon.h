@@ -13,11 +13,14 @@ class Polygon
 protected:
 	unsigned int vao;
 	unsigned int vbo;
+	unsigned int ebo;
 	unsigned int eachAttributeNumber;
 	unsigned int totalVerticeNumber; 
 	unsigned int totalCoordinateNumber;
 	unsigned int totalPointNumber;
+	unsigned int totalIndiceNumber;
 	float * verticeAttributes;
+	unsigned int* indices;
 	bool isUpdated;
 	glm::vec3 color;
 	glm::mat4 matrix;
@@ -26,7 +29,7 @@ protected:
 	void initiliazeVertexBufferDatas();
 
 public:
-	Polygon(float vertices[], vector<unsigned int> vertextAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
+	Polygon(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber);
 	Polygon();
 	virtual ~Polygon();
 	void copyFrom(const Polygon& src);

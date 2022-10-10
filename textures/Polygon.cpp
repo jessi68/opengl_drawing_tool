@@ -16,6 +16,7 @@ void Polygon::copyFrom(const Polygon& src)
 	this->color = src.color;
 	this->points = src.points;
 	this->matrix = src.matrix;
+	this->indices = src.indices;
 	this->isUpdated = true;
 }
 
@@ -41,19 +42,23 @@ Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, 
 	this->matrix = glm::mat4(1.0f);
 	this->isUpdated = true;
 	this->totalPointNumber = this->points.size();
+	this->totalIndiceNumber = 3 * (this->totalPointNumber - 2);
 	this->initiliazeVertexBufferDatas();
 }
 
 void Polygon::initiliazeVertexBufferDatas()
 {
-
 	glGenVertexArrays(1, &(this->vao));
 	glGenBuffers(1, &(this->vbo));
+	glGenBuffers(1, &(this->ebo));
+
+	glBindVertexArray(this->vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->totalCoordinateNumber, verticeAttributes, GL_STATIC_DRAW);
 
-	glBindVertexArray(this->vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * this->totalIndiceNumber, indices, GL_STATIC_DRAW);
 
 	int index = 0;
 	int eachAttributeSize = eachAttributeNumber * sizeof(float);
@@ -72,6 +77,7 @@ Polygon::~Polygon() {
 	delete[] this->verticeAttributes;
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+	delete[] this->indices;
 }
 
 Polygon& Polygon::operator=(const Polygon& polygon)
@@ -121,8 +127,8 @@ Polygon::Polygon()
 
 void Polygon::render()
 {
-	
-	glDrawArrays(GL_TRIANGLES, 0, this->totalVerticeNumber);
+	glBindVertexArray(this->vao);
+	glDrawElements(GL_TRIANGLES, this->totalIndiceNumber, GL_UNSIGNED_INT, 0);
 }
 
 void Polygon::translation(float dx, float dy)
