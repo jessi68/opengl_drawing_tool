@@ -23,8 +23,7 @@ public:
 	Polygon(const Polygon& src);
 	Polygon& operator=(const Polygon& polygon);
 	bool isIncludePoint(Point point);
-	void setShaderValue(Shader* shader);
-	// 나중에 movable 로 분리할 필요도 있을듯? 
+	void setShaderValue(Shader* shader); 
 	void translation(float dx, float dy);
 	void scale(float sx, float sy);
 	void rotate(float angle);

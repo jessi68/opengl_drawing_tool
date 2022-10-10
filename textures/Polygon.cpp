@@ -80,13 +80,13 @@ void Polygon::translation(float dx, float dy)
 	glm::mat4 transMatrix = glm::mat4(1.0f);
 	transMatrix[3][0] = dx;
 	transMatrix[3][1] = dy;
+	
 	this->matrix = transMatrix * this->matrix;
 	this->isUpdated = false;
 }
 
 void Polygon::scale(float sx, float sy)
 {
-	cout << sx << "  sx" << sy << " sy " << endl;
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
 	
 	scaleMatrix[0][0] = 1 + sx;

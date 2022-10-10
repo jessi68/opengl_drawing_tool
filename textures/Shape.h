@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// 만들 수 있다면 추상클래스로 만들고 싶다. 
 class Shape
 {
 protected:
