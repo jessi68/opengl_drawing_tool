@@ -12,6 +12,7 @@ Rectangle::Rectangle(float* vertices, vector<unsigned int> vertexAttributeNumber
 }
 
 Rectangle::Rectangle() {
+	
 	float* vertices = new float[12] {
 		// vertex  
 		-0.2, 0.0, 0,
@@ -24,8 +25,6 @@ Rectangle::Rectangle() {
 		0, 1, 2,
 		1, 2, 3
 	};
-
-	cout << sizeof(indices) << "rectangle indices" << endl;
 
 	// 사각형 만들게 되면 이 로직 함수 따로 만들어야 할수도?
 	for (int i = 0; i < 12; i += 3) {
@@ -47,6 +46,8 @@ Rectangle::Rectangle() {
 
 	this->initiliazeVertexBufferDatas();
 }
+
+
 
 Rectangle::Rectangle(const Rectangle& src) : Polygon(src)
 {

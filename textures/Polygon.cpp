@@ -8,76 +8,30 @@ using namespace std;
 
 void Polygon::copyFrom(const Polygon& src)
 {
-	this->verticeAttributes = src.verticeAttributes;
-	this->totalCoordinateNumber = src.totalCoordinateNumber;
-	this->eachAttributeNumber = src.eachAttributeNumber;
-	this->totalVerticeNumber = src.totalVerticeNumber;
-	this->vertexAttributeNumbers = src.vertexAttributeNumbers;
-	this->color = src.color;
 	this->points = src.points;
-	this->matrix = src.matrix;
-	this->indices = src.indices;
+	this->totalPointNumber = src.totalPointNumber;
 	this->isUpdated = true;
 }
 
-Polygon::Polygon(const Polygon& src)
+Polygon::Polygon(const Polygon& src) : Shape(src)
 {
-	copyFrom(src);
+	this->copyFrom(src);
 }
 
-Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
+Polygon::Polygon()
 {
-	this->verticeAttributes = vertices;
-	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
-	for (int i = 0; i < this->totalCoordinateNumber; i += totalVerticeNumber) {
+
+}
+
+Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber) : Shape(vertices, vertexAttributeNumbers, eachAttributeNumber, totalVerticeNumber)
+{
+	for (unsigned int i = 0; i < this->totalCoordinateNumber; i += totalVerticeNumber) {
 		// local variable point is coopied to points vector and vector allocates memory heap so it remains even after constructor function finishes
 		this->points.push_back(Point(vertices[i], vertices[i + 1]));
 	}
-
-	this->eachAttributeNumber = eachAttributeNumber;
-	this->totalVerticeNumber = totalVerticeNumber;
-	this->vertexAttributeNumbers = vertexAttributeNumbers;
-	this->color = glm::vec3(0, 0, 1);
-	//  고치기  
-	this->matrix = glm::mat4(1.0f);
 	this->isUpdated = true;
-	this->totalPointNumber = this->points.size();
+	this->totalPointNumber = (unsigned) this->points.size();
 	this->totalIndiceNumber = 3 * (this->totalPointNumber - 2);
-	this->initiliazeVertexBufferDatas();
-}
-
-void Polygon::initiliazeVertexBufferDatas()
-{
-	glGenVertexArrays(1, &(this->vao));
-	glGenBuffers(1, &(this->vbo));
-	glGenBuffers(1, &(this->ebo));
-
-	glBindVertexArray(this->vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * this->totalCoordinateNumber, verticeAttributes, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * this->totalIndiceNumber, indices, GL_STATIC_DRAW);
-
-	int index = 0;
-	int eachAttributeSize = eachAttributeNumber * sizeof(float);
-	int startValue = 0;
-
-	for (auto vertexAttributeNumber : vertexAttributeNumbers) {
-		glVertexAttribPointer(index, vertexAttributeNumber, GL_FLOAT, GL_FALSE, eachAttributeSize, (void*)(startValue * sizeof(float)));
-		glEnableVertexAttribArray(index);
-		startValue += vertexAttributeNumber;
-		index += 1;
-	}
-
-}
-
-Polygon::~Polygon() {
-	delete[] this->verticeAttributes;
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	delete[] this->indices;
 }
 
 Polygon& Polygon::operator=(const Polygon& polygon)
@@ -85,6 +39,7 @@ Polygon& Polygon::operator=(const Polygon& polygon)
 	if (this == &polygon) {
 		return *this;
 	}
+	Shape::operator = (polygon);
 	copyFrom(polygon);
 
 	return *this;
@@ -96,7 +51,7 @@ bool Polygon::isIncludePoint(Point point)
    // 그렇기에 isIncludePoint 에서 points 업데이트 하는게 도형 움직일 때마다 points 업데이트 하는 것보다 효율적
 	
 	glm::vec4 result;
-	int currentIndex = 0;
+	unsigned int currentIndex = 0;
 	int vertexAttributeIndex;
 
 	if (!this->isUpdated) {
@@ -118,17 +73,6 @@ void Polygon::setShaderValue(Shader* shader)
 {
 	shader->setVec3("color", color);
 	shader->setMat4("transformation", this->matrix);
-}
-
-Polygon::Polygon()
-{
-
-}
-
-void Polygon::render()
-{
-	glBindVertexArray(this->vao);
-	glDrawElements(GL_TRIANGLES, this->totalIndiceNumber, GL_UNSIGNED_INT, 0);
 }
 
 void Polygon::translation(float dx, float dy)

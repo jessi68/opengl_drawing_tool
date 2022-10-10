@@ -159,6 +159,7 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Polygon.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ThreeDimensionalFigure.cpp" />
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
@@ -180,6 +181,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Polygon.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="ThreeDimensionalFigure.h" />
     <ClInclude Include="Triangle.h" />

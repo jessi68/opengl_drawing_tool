@@ -39,7 +39,6 @@ Triangle::Triangle()
 	this->isUpdated = true;
 	this->totalPointNumber = 3;
 	this->totalIndiceNumber = 3 * (this->totalPointNumber - 2);
-
 	this->initiliazeVertexBufferDatas();
 }
 

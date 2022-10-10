@@ -1,6 +1,6 @@
 #include "Polygon.h"
 
-class ThreeDimensionalFigure: Polygon
+class ThreeDimensionalFigure: Shape
 {
 public:
 
