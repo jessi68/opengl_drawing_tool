@@ -11,11 +11,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Dimension.h"
 #include "Shader.h"
 #include "Polygon.h"
 #include "Rectangle.h"
-
-#include "PolygonManager.h"
+#include "Cube.h"
+#include "ShapeManager.h"
 
 #include <iostream>
 
@@ -25,12 +26,7 @@ enum TRANSFORMATION_MODE
     SCALE
 };
 
-enum DIMENSION {
-    TWO,
-    THREE
-};
-
-void makePolygonUI(PolygonManager* polygonManager);
+void makePolygonUI(ShapeManager* shapeManager);
 void makeTransformationUI();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -57,7 +53,7 @@ float speed = 0.3f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-PolygonManager* polygonManager;
+ShapeManager* polygonManager;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -103,7 +99,7 @@ int main()
 
    
     // make Drawing manager singleton
-    polygonManager = PolygonManager::getInstance();
+    polygonManager = ShapeManager::getInstance();
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
@@ -160,7 +156,6 @@ int main()
         makeTransformationUI();
         ImGui::End();
 
-        //polygonManager->activateBasicShader();
         polygonManager->renderAll();
       
         ImGui::Render();
@@ -182,7 +177,7 @@ int main()
     return 0;
 }
 
-void makePolygonUI(PolygonManager * drawingPolygonManager) {
+void makePolygonUI(ShapeManager * drawingPolygonManager) {
    
     if (ImGui::Button("change coordinate")) {
         if (dimension == TWO) {
@@ -191,10 +186,11 @@ void makePolygonUI(PolygonManager * drawingPolygonManager) {
         else {
             dimension = TWO;
         }
+        polygonManager->setDimension(dimension);
     }
     if (dimension == TWO) {
         if (ImGui::Button("triangle")) {
-
+            
             drawingPolygonManager->addPolygon(new Triangle());
 
         }
@@ -204,7 +200,7 @@ void makePolygonUI(PolygonManager * drawingPolygonManager) {
     }
     else {
         if (ImGui::Button("cube")) {
-
+            drawingPolygonManager->addThreeDimensionalFigure(new Cube());
         }
     }
    
@@ -272,17 +268,17 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         double x, y;
         //getting cursor position
         glfwGetCursorPos(window, &x, &y);
-        Point currentPoint = changeFromWindowToWorld(x, y);
-        cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
-        polygonManager->selectPolygon(currentPoint);
+
+        if (dimension == TWO) {
+            Point currentPoint = changeFromWindowToWorld(x, y);
+            cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
+            polygonManager->selectPolygon(currentPoint);
+        }
     }
 
     if (button == GLFW_MOUSE_BUTTON_LEFT and action == GLFW_RELEASE) {
         isMouseClicked = false;
     }
-
-   
-
 }
 
 // glfw: whenever the mouse moves, this callback is called

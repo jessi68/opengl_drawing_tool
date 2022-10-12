@@ -69,12 +69,6 @@ bool Polygon::isIncludePoint(Point point)
 	return PolygonAlgorithm::isInside(this->points, this->totalPointNumber, point);
 }
 
-void Polygon::setShaderValue(Shader* shader)
-{
-	shader->setVec3("color", color);
-	shader->setMat4("transformation", this->matrix);
-}
-
 void Polygon::translation(float dx, float dy)
 {
 	glm::mat4 transMatrix = glm::mat4(1.0f);

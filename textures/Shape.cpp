@@ -87,3 +87,8 @@ void Shape::render()
 	glDrawElements(GL_TRIANGLES, this->totalIndiceNumber, GL_UNSIGNED_INT, 0);
 }
 
+void Shape::setShaderValue(Shader* shader)
+{
+	shader->setVec3("color", color);
+	shader->setMat4("transformation", this->matrix);
+}

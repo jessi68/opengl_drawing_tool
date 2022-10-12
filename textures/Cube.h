@@ -1,7 +1,11 @@
 #include "ThreeDimensionalFigure.h"
 
-class Cube : ThreeDimensionalFigure
+class Cube : public ThreeDimensionalFigure
 {
-
+public:
+	Cube(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int* indices);
+	Cube();
+	Cube(const Cube& src);
+	Cube& operator=(const Cube& cube);
 };
 

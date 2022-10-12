@@ -145,7 +145,7 @@
     <ClCompile Include="..\..\shaders\Opengl_projet\glad.c" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="PolygonManager.cpp" />
+    <ClCompile Include="ShapeManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
@@ -166,7 +166,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
-    <ClInclude Include="PolygonManager.h" />
+    <ClInclude Include="Dimension.h" />
+    <ClInclude Include="ShapeManager.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw.h" />

@@ -1,11 +1,10 @@
 #include "Triangle.h"
 
-Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, this->totalVerticeNumber)
+Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, 3)
 {
 	unsigned int* indices = new unsigned int[3] {
 		0, 1, 2
 	};
-	this->totalVerticeNumber = 3;
 	this->indices = indices;
 }
 

@@ -66,7 +66,7 @@
     <ClCompile Include="imgui_tables.cpp">
       <Filter>소스 파일\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="PolygonManager.cpp">
+    <ClCompile Include="ShapeManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PolygonAlgorithm.cpp">
@@ -81,13 +81,13 @@
     <ClCompile Include="Rectangle.cpp">
       <Filter>소스 파일\shape</Filter>
     </ClCompile>
-    <ClCompile Include="ThreeDimensionalFigure.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>소스 파일\shape</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
+      <Filter>소스 파일\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreeDimensionalFigure.cpp">
       <Filter>소스 파일\shape</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,7 +128,7 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>헤더 파일\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="PolygonManager.h">
+    <ClInclude Include="ShapeManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PolygonAlgorithm.h">
@@ -146,14 +146,17 @@
     <ClInclude Include="Rectangle.h">
       <Filter>헤더 파일\shape</Filter>
     </ClInclude>
-    <ClInclude Include="ThreeDimensionalFigure.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>헤더 파일\shape</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>헤더 파일\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreeDimensionalFigure.h">
+      <Filter>헤더 파일\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Dimension.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

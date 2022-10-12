@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Point.h"
-#include "Shader.h"
 #include "Shape.h"
 #include <glm/glm.hpp>
 
@@ -23,7 +22,6 @@ public:
 	Polygon(const Polygon& src);
 	Polygon& operator=(const Polygon& polygon);
 	bool isIncludePoint(Point point);
-	void setShaderValue(Shader* shader); 
 	void translation(float dx, float dy);
 	void scale(float sx, float sy);
 	void rotate(float angle);

@@ -1,5 +1,6 @@
 #include <glm/glm.hpp>
 #include  <vector>
+#include "Shader.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ protected:
 	unsigned int* indices;
 	glm::vec3 color;
 	glm::mat4 matrix;
+
 	void initiliazeVertexBufferDatas();
 public:
 	Shape();
@@ -28,5 +30,6 @@ public:
 	Shape(const Shape& src);
 	Shape& operator=(const Shape& shape);
 	void render();
+	void setShaderValue(Shader* shader);
 };
 
