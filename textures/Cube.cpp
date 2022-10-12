@@ -1,7 +1,8 @@
 #include "Cube.h"
 
-Cube::Cube(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int * indices) : ThreeDimensionalFigure(vertices, vertexAttributeNumbers, eachAttributeNumber, 8) {
+Cube::Cube(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int * indices, glm::vec3 center) : ThreeDimensionalFigure(vertices, vertexAttributeNumbers, eachAttributeNumber, 8) {
 	this->indices = indices;
+	this->center = center;
 }
 
 Cube::Cube() {
@@ -37,6 +38,7 @@ Cube::Cube() {
 		1, 3, 7
 	};
 
+	this->center = glm::vec3(0, 0, 0);
 	this->verticeAttributes = vertices;
 	this->indices = indices;
 	this->vertexAttributeNumbers.push_back(3);
