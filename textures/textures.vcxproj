@@ -144,7 +144,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\shaders\Opengl_projet\glad.c" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Lines.cpp" />
     <ClCompile Include="ShapeManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -161,12 +163,16 @@
     <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ThreeDimensionalFigure.cpp" />
+    <ClCompile Include="TransformCoordinate.cpp" />
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Dimension.h" />
+    <ClInclude Include="Lines.h" />
+    <ClInclude Include="ScreenProperty.h" />
     <ClInclude Include="ShapeManager.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -185,15 +191,14 @@
     <ClInclude Include="Shape.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="ThreeDimensionalFigure.h" />
+    <ClInclude Include="TransformCoordinate.h" />
     <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="2d_shape.frag" />
     <None Include="2d_shape.vert" />
-    <None Include="basic_lighting.frag" />
-    <None Include="basic_lighting.vert" />
-    <None Include="light_cube.frag" />
-    <None Include="light_cube.vert" />
+    <None Include="3d_shape.frag" />
+    <None Include="3d_shape.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Downloads\happy.png" />

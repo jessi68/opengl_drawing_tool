@@ -17,8 +17,10 @@
 #include "Rectangle.h"
 #include "Cube.h"
 #include "ShapeManager.h"
+#include "ScreenProperty.h"
 
 #include <iostream>
+#include <stdio.h>
 
 enum TRANSFORMATION_MODE
 {
@@ -37,10 +39,7 @@ unsigned int loadTexture(const char* path);
 
 // settings
 TRANSFORMATION_MODE transformationMode = SCALE;
-DIMENSION dimension = TWO;
-
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+DIMENSION dimension = THREE;
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -53,7 +52,7 @@ float speed = 0.3f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-ShapeManager* polygonManager;
+ShapeManager* shapeManager;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -99,7 +98,7 @@ int main()
 
    
     // make Drawing manager singleton
-    polygonManager = ShapeManager::getInstance();
+    shapeManager = ShapeManager::getInstance();
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
@@ -143,7 +142,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -152,11 +151,11 @@ int main()
         ImGui::SetNextWindowSize(ImVec2(100, 180));
         ImGui::Begin("polygon");
         // pass singleton as parameter 
-        makePolygonUI(polygonManager);
+        makePolygonUI(shapeManager);
         makeTransformationUI();
         ImGui::End();
 
-        polygonManager->renderAll();
+        shapeManager->renderAll();
       
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -186,12 +185,18 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
         else {
             dimension = TWO;
         }
-        polygonManager->setDimension(dimension);
+        shapeManager->setDimension(dimension);
     }
     if (dimension == TWO) {
         if (ImGui::Button("triangle")) {
-            
-            drawingPolygonManager->addPolygon(new Triangle());
+            float* vertices = new float[9] {
+                // vertex  
+                -0.2, 0.0, 0,
+                    0, 0.4, 0,
+                    0.2, 0.0, 0
+            };
+
+            drawingPolygonManager->addPolygon(new Triangle(vertices));
 
         }
         if (ImGui::Button("rectangle")) {
@@ -207,8 +212,7 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
 }
 
 void makeTransformationUI() {
-    //ImGui::SetCursorPos(ImVec2(110, 30));
-    
+   
     ImGui::Text("transformation");
     if (ImGui::Button("rotation")) {
         transformationMode = ROTATION;
@@ -227,7 +231,7 @@ void processInput(GLFWwindow* window)
     float distance = deltaTime * speed;
 
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        polygonManager->processScaling(0.8, 0.8);
+        shapeManager->processScaling(0.8, 0.8);
     }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -241,7 +245,7 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         dx = distance;
 
-     polygonManager->processTranslation(dx, dy);
+     shapeManager->processTranslation(dx, dy);
         
 }
 
@@ -271,8 +275,17 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
         if (dimension == TWO) {
             Point currentPoint = changeFromWindowToWorld(x, y);
-            cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
-            polygonManager->selectPolygon(currentPoint);
+            //cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
+            shapeManager->selectPolygon(currentPoint);
+        }
+        else {
+            GLuint index;
+            GLbyte color[4];
+            glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+            //cout << "index " << index << endl;
+            //printf(" color %02hhx%02hhx%02hhx%02hhx", color[0], color[1], color[2], color[3]);
+
+            shapeManager->selectThreeDimensionalFigure(index - 1);
         }
     }
 
@@ -308,10 +321,10 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
         float normalizedX = xoffset * 2 / SCR_WIDTH;
         float normalizedY = yoffset * 2 / SCR_HEIGHT;
         if (transformationMode == SCALE) {
-            polygonManager->processScaling(normalizedX, normalizedY);
+            shapeManager->processScaling(normalizedX, normalizedY);
         }
         else {
-            polygonManager->processRotation(normalizedX + normalizedY);
+            shapeManager->processRotation(normalizedX + normalizedY);
         }
     }
 }

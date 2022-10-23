@@ -90,6 +90,15 @@
     <ClCompile Include="ThreeDimensionalFigure.cpp">
       <Filter>소스 파일\shape</Filter>
     </ClCompile>
+    <ClCompile Include="Lines.cpp">
+      <Filter>소스 파일\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Coordinate.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCoordinate.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -158,24 +167,30 @@
     <ClInclude Include="Dimension.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Lines.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenProperty.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Coordinate.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCoordinate.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic_lighting.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="basic_lighting.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="light_cube.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="light_cube.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="2d_shape.frag">
       <Filter>shaders</Filter>
     </None>
     <None Include="2d_shape.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="3d_shape.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="3d_shape.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

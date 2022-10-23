@@ -29,9 +29,9 @@ Polygon::Polygon(float * vertices, vector<unsigned int> vertexAttributeNumbers, 
 		// local variable point is coopied to points vector and vector allocates memory heap so it remains even after constructor function finishes
 		this->points.push_back(Point(vertices[i], vertices[i + 1]));
 	}
+
 	this->isUpdated = true;
 	this->totalPointNumber = (unsigned) this->points.size();
-	this->totalIndiceNumber = 3 * (this->totalPointNumber - 2);
 }
 
 Polygon& Polygon::operator=(const Polygon& polygon)
@@ -104,9 +104,3 @@ void Polygon::rotate(float angle)
 	this->matrix = rotationMatrix * this->matrix;
 	this->isUpdated = false;
 }
-
-glm::mat4 Polygon::getMatrix()
-{
-	return this->matrix;
-}
-

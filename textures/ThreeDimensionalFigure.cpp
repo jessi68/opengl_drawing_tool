@@ -2,16 +2,20 @@
 
 ThreeDimensionalFigure::ThreeDimensionalFigure()
 {
+	transformCoordinate = new TransformCoordinate();
+	coordinate = transformCoordinate;
 }
 
 ThreeDimensionalFigure::ThreeDimensionalFigure(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber) : Shape(vertices, vertexAttributeNumbers, eachAttributeNumber, totalVerticeNumber)
 {
-
+	transformCoordinate = new TransformCoordinate();
+	coordinate = transformCoordinate;
 }
 
 ThreeDimensionalFigure::ThreeDimensionalFigure(const ThreeDimensionalFigure& src) : Shape(src)
 {
-
+	transformCoordinate = new TransformCoordinate();
+	coordinate = transformCoordinate;
 }
 
 ThreeDimensionalFigure& ThreeDimensionalFigure::operator=(const ThreeDimensionalFigure& threeDimensionalFigure)
@@ -53,4 +57,9 @@ void ThreeDimensionalFigure::rotate(float angle)
 	rotationMatrix[1][1] = cosValue;
 
 	this->matrix = rotationMatrix * this->matrix;
+}
+
+void ThreeDimensionalFigure::renderCoordinate()
+{
+	this->coordinate->render();
 }

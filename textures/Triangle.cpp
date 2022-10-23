@@ -1,22 +1,15 @@
 #include "Triangle.h"
 
-Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, 3)
+Triangle::Triangle()
 {
-	unsigned int* indices = new unsigned int[3] {
-		0, 1, 2
-	};
-	this->indices = indices;
+	cout << " after hey before h " << endl;
 }
 
-Triangle::Triangle() 
-{
-	float * vertices = new float[9] {
-		// vertex  
-		-0.2, 0.0, 0,
-		0, 0.4, 0,
-		0.2, 0.0, 0
-	};
+// constructor 하나 더 만들기
 
+Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber)
+{	
+	
 	unsigned int * indices = new unsigned int[3] {
 		0, 1, 2
 	};

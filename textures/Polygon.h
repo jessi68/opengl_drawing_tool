@@ -25,6 +25,5 @@ public:
 	void translation(float dx, float dy);
 	void scale(float sx, float sy);
 	void rotate(float angle);
-	glm::mat4 getMatrix();
 };
 
