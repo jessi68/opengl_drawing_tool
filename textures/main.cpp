@@ -228,6 +228,7 @@ void makeTransformationUI() {
 void processInput(GLFWwindow* window)
 {
     float dx = 0, dy = 0;
+    float dz = 0;
     float distance = deltaTime * speed;
 
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
@@ -245,7 +246,13 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         dx = distance;
 
-     shapeManager->processTranslation(dx, dy);
+    if (glfwGetKey(window, GLFW_KEY_UP)) {
+        dz = distance;
+    } if (glfwGetKey(window, GLFW_KEY_DOWN)) {
+        dz = -1 * distance;
+    }
+
+     shapeManager->processTranslation(dx, dy, dz);
         
 }
 
@@ -315,6 +322,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
         lastX = xpos;
         lastY = ypos;
 
+        shapeManager->processMouseMovement(xoffset, yoffset);
         cout << "xoffset " << xoffset << endl;
         cout << "yoffset" << yoffset << endl;
 

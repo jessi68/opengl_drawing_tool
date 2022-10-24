@@ -40,8 +40,9 @@ public:
 	void renderAll();
 	void selectPolygon(Point point);
 	void selectThreeDimensionalFigure(int index);
-	void processTranslation(float dx, float dy);
+	void processTranslation(float dx, float dy, float dz);
 	void processScaling(float sx, float sy);
 	void processRotation(float angle);
 	void setDimension(DIMENSION dimension);
+	void processMouseMovement(float xoffset, float yoffset);
 };

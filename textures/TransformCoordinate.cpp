@@ -9,20 +9,19 @@ TransformCoordinate::TransformCoordinate()
 
 	float* xVertices = new float[9] {
 		// vertex  
-		0.18, 0.01, -0.03,
-		0.19, 0.00, 0.02,
-		0.16, 0.00, 0.0
-	
+		0.20, 0.007, 0,
+		0.21, 0.00, 0.005,
+		0.20, -0.007, 0.0
 	};
 	float* yVertices = new float[9] {
-		0, 0.22, 0,
-		-0.01, 0.2, 0.0,
-		0.01, 0.2, 0.0
+		0, 0.216, 0,
+		-0.008, 0.2, 0.0,
+		0.008, 0.2, 0.0
 	};
 	float* zVertices = new float[9] {
-		0, -1.5, 0,
-		-0.01, -1.4, 0,
-		0.01, -1.4, 0
+		0, 0.02, -1.2,
+		-0.01, 0.0, -1.3,
+		0.0, -0.02, -1.2
 	};
 
 	// 기회되면 const paeamerer 로 바꾸기 vector 같은 경우에는 push back 할 때 constructor 불러옴. 

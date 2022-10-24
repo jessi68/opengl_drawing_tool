@@ -9,7 +9,9 @@ ShapeManager::ShapeManager()
     this->camera = new Camera(glm::vec3(-0.3f, 0.0f, 1.0f));
     this->projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     this->polygonNumber = 0;
+    this->selectedThreeDimensionalFigureIndex = -1;
     this->selectedPolygonIndex = -1;
+    this->threeDimensionalFigureNumber = 0;
 }
 
 ShapeManager* ShapeManager::getInstance() {
@@ -120,7 +122,6 @@ void ShapeManager::renderAll()
                 this->basic3DShader->setVec3("color", 0.0, 0.0, 1.0);
                 threeDimensionFigures[i]->renderCoordinate();
             }
-            
         }
     }
 }
@@ -141,11 +142,19 @@ void ShapeManager::selectThreeDimensionalFigure(int index)
     this->selectedThreeDimensionalFigureIndex = index;
 }
 
-void ShapeManager::processTranslation(float dx, float dy)
+void ShapeManager::processTranslation(float dx, float dy, float dz)
 {
-    if (this->selectedPolygonIndex != -1) {
-          polygons[this->selectedPolygonIndex]->translation(dx, dy);
+    if (this->dimension == TWO) {
+        if (this->selectedPolygonIndex != -1) {
+            polygons[this->selectedPolygonIndex]->translation(dx, dy);
+        }
     }
+    else {
+        if (this->selectedThreeDimensionalFigureIndex != -1) {
+            threeDimensionFigures[this->selectedThreeDimensionalFigureIndex]->translation(dx, dy, dz);
+        }
+    }
+    
 }
 
 void ShapeManager::processScaling(float sx, float sy)
@@ -165,6 +174,11 @@ void ShapeManager::processRotation(float angle)
 void ShapeManager::setDimension(DIMENSION dimension)
 {
     this->dimension = dimension;
+}
+
+void ShapeManager::processMouseMovement(float xoffset, float yoffset)
+{
+    this->camera->ProcessMouseMovement(xoffset, yoffset);
 }
 
 ShapeManager* ShapeManager::drawingManager = nullptr;
