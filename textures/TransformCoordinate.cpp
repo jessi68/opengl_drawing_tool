@@ -1,27 +1,28 @@
 #include "TransformCoordinate.h"
 
-TransformCoordinate::TransformCoordinate()
+TransformCoordinate::TransformCoordinate(float x, float y, float z)
 {
 	cout << "hey" << endl;
-	// new operator 로 생성해도 triangle default 생성자가 호출됨. 
+	// new operator 로 생성해도 triangle default 생성자가 호출됨. s
 	// bool 변수 (initlizebuffer 할껀지) 이런 생성자 함수 만들어야지. 
 	// 생성자 호출 막기 위해 vector 사용
 
 	float* xVertices = new float[9] {
 		// vertex  
-		0.20, 0.007, 0,
-		0.21, 0.00, 0.005,
-		0.20, -0.007, 0.0
+		x, 0.007, 0,
+		x + (float) 0.01, 0.00, 0.005,
+		x, -0.007, 0.0
 	};
 	float* yVertices = new float[9] {
-		0, 0.216, 0,
-		-0.008, 0.2, 0.0,
-		0.008, 0.2, 0.0
+		0, y + (float) 0.016, 0,
+		-0.008, y, 0.0,
+		0.008, y, 0.0
 	};
+
 	float* zVertices = new float[9] {
-		0, 0.02, -1.2,
-		-0.01, 0.0, -1.3,
-		0.0, -0.02, -1.2
+		0.0, -0.007, z,
+		0.0, 0.007, z,
+		0.0, 0.0, z + (float) 0.02
 	};
 
 	// 기회되면 const paeamerer 로 바꾸기 vector 같은 경우에는 push back 할 때 constructor 불러옴. 

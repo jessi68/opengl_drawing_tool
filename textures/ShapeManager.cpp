@@ -6,7 +6,7 @@ ShapeManager::ShapeManager()
 {
     this->basic2DShader = new Shader("2d_shape.vert", "2d_shape.frag");
     this->basic3DShader = new Shader("3d_shape.vert", "3d_shape.frag");
-    this->camera = new Camera(glm::vec3(-0.3f, 0.0f, 1.0f));
+    this->camera = new Camera(glm::vec3(-0.3f, 0.2f, 1.0f));
     this->projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     this->polygonNumber = 0;
     this->selectedThreeDimensionalFigureIndex = -1;
