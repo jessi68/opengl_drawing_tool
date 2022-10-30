@@ -2,7 +2,6 @@
 
 TransformCoordinate::TransformCoordinate(float x, float y, float z)
 {
-	cout << "hey" << endl;
 	// new operator 로 생성해도 triangle default 생성자가 호출됨. s
 	// bool 변수 (initlizebuffer 할껀지) 이런 생성자 함수 만들어야지. 
 	// 생성자 호출 막기 위해 vector 사용
@@ -38,10 +37,8 @@ TransformCoordinate::~TransformCoordinate()
 	
 }
 
-void TransformCoordinate::render()
+void TransformCoordinate::renderHeel()
 {
-	this->lines.render();
-
 	for (int i = 0; i < 3; i++) {
 		triangles[i]->render();
 	}

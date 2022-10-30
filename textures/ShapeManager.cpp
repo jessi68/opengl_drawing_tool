@@ -181,4 +181,16 @@ void ShapeManager::processMouseMovement(float xoffset, float yoffset)
     this->camera->ProcessMouseMovement(xoffset, yoffset);
 }
 
+void ShapeManager::changeToTranslationModeIn3d() {
+    if (selectedThreeDimensionalFigureIndex != -1) {
+        this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->changeToTransfomationMode();
+    }
+}
+
+void ShapeManager::changeToScaleModeIn3d() {
+    if (selectedThreeDimensionalFigureIndex != -1) {
+        this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->changeToScaleMode();
+    }
+}
+
 ShapeManager* ShapeManager::drawingManager = nullptr;

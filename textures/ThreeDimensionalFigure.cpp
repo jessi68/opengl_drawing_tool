@@ -1,21 +1,26 @@
 #include "ThreeDimensionalFigure.h"
 
+void ThreeDimensionalFigure::initialize() 
+{
+	cout << "it is work" << endl;
+	transformCoordinate = new TransformCoordinate();
+	scaleCoordinate = new ScaleCoordinate();
+	coordinate = transformCoordinate;
+}
 ThreeDimensionalFigure::ThreeDimensionalFigure()
 {
-	transformCoordinate = new TransformCoordinate();
-	coordinate = transformCoordinate;
+	initialize();
 }
 
 ThreeDimensionalFigure::ThreeDimensionalFigure(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber) : Shape(vertices, vertexAttributeNumbers, eachAttributeNumber, totalVerticeNumber)
 {
-	transformCoordinate = new TransformCoordinate();
-	coordinate = transformCoordinate;
+	initialize();
+
 }
 
 ThreeDimensionalFigure::ThreeDimensionalFigure(const ThreeDimensionalFigure& src) : Shape(src)
 {
-	transformCoordinate = new TransformCoordinate();
-	coordinate = transformCoordinate;
+	initialize();
 }
 
 ThreeDimensionalFigure& ThreeDimensionalFigure::operator=(const ThreeDimensionalFigure& threeDimensionalFigure)
@@ -62,4 +67,15 @@ void ThreeDimensionalFigure::rotate(float angle)
 void ThreeDimensionalFigure::renderCoordinate()
 {
 	this->coordinate->render();
+}
+
+void ThreeDimensionalFigure::changeToScaleMode()
+{
+	this->coordinate = scaleCoordinate;
+	cout << "change to scale mode" << endl;
+}
+
+void ThreeDimensionalFigure::changeToTransfomationMode()
+{
+	this->coordinate = transformCoordinate;
 }

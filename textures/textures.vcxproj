@@ -147,6 +147,7 @@
     <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Lines.cpp" />
+    <ClCompile Include="ScaleCoordinate.cpp" />
     <ClCompile Include="ShapeManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Dimension.h" />
     <ClInclude Include="Lines.h" />
+    <ClInclude Include="ScaleCoordinate.h" />
     <ClInclude Include="ScreenProperty.h" />
     <ClInclude Include="ShapeManager.h" />
     <ClInclude Include="imconfig.h" />

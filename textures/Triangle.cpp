@@ -22,7 +22,7 @@ Triangle::Triangle(float * vertices, vector<unsigned int> vertexAttributeNumbers
 
 	this->verticeAttributes = vertices;
 	this->indices = indices;
-	this->vertexAttributeNumbers.push_back(3);
+	this->vertexAttributeNumbers = vertexAttributeNumbers;
 	this->eachAttributeNumber = 3;
 	this->totalVerticeNumber = 3;
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;

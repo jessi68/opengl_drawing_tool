@@ -30,7 +30,6 @@ enum TRANSFORMATION_MODE
 
 void makePolygonUI(ShapeManager* shapeManager);
 void makeTransformationUI();
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void processInput(GLFWwindow* window);
@@ -82,8 +81,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    //glfwSetScrollCallback(window, scroll_callback);
+
 
     // tell GLFW to capture our mouse
    
@@ -192,15 +190,21 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
             float* vertices = new float[9] {
                 // vertex  
                 -0.2, 0.0, 0,
-                    0, 0.4, 0,
-                    0.2, 0.0, 0
+                 0, 0.4, 0,
+                 0.2, 0.0, 0
             };
 
             drawingPolygonManager->addPolygon(new Triangle(vertices));
-
         }
         if (ImGui::Button("rectangle")) {
-            drawingPolygonManager->addPolygon(new Rectangle());
+            float* vertices = new float[12] {
+                // vertex  
+                -0.2, 0.0, 0,
+                -0.2, 0.4, 0,
+                0.2, 0.0, 0,
+                0.2, 0.4, 0,
+            };
+            drawingPolygonManager->addPolygon(new Rectangle(vertices));
         }
     }
     else {
@@ -211,14 +215,24 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
    
 }
 
-void makeTransformationUI() {
-   
+void makeTransformationUI() 
+{
     ImGui::Text("transformation");
-    if (ImGui::Button("rotation")) {
-        transformationMode = ROTATION;
+    if (dimension == TWO) {
+        if (ImGui::Button("rotation")) {
+            transformationMode = ROTATION;
+        }
+        if (ImGui::Button("scale")) {
+            transformationMode = SCALE;
+        }
     }
-    if (ImGui::Button("scale")) {
-        transformationMode = SCALE;
+    else {
+        if (ImGui::Button("trnaformation")) {
+            shapeManager->changeToTranslationModeIn3d();
+        } 
+        if (ImGui::Button("Scale")) {
+            shapeManager->changeToScaleModeIn3d();
+        }
     }
   
 }
@@ -289,7 +303,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             GLuint index;
             GLbyte color[4];
             glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-            //cout << "index " << index << endl;
+            cout << "index " << index << endl;
+            // 배경, ui 등을 클릭했을 때
+            if (index == 0) {
+                return;
+            }
             //printf(" color %02hhx%02hhx%02hhx%02hhx", color[0], color[1], color[2], color[3]);
 
             shapeManager->selectThreeDimensionalFigure(index - 1);
@@ -298,42 +316,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
     if (button == GLFW_MOUSE_BUTTON_LEFT and action == GLFW_RELEASE) {
         isMouseClicked = false;
-    }
-}
-
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
-    if (isMouseClicked) {
-        float xpos = static_cast<float>(xposIn);
-        float ypos = static_cast<float>(yposIn);
-
-        if (firstMouse)
-        {
-            lastX = xpos;
-            lastY = ypos;
-            firstMouse = false;
-        }
-
-        float xoffset = xpos - lastX;
-        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-        lastX = xpos;
-        lastY = ypos;
-
-        shapeManager->processMouseMovement(xoffset, yoffset);
-        cout << "xoffset " << xoffset << endl;
-        cout << "yoffset" << yoffset << endl;
-
-        float normalizedX = xoffset * 2 / SCR_WIDTH;
-        float normalizedY = yoffset * 2 / SCR_HEIGHT;
-        if (transformationMode == SCALE) {
-            shapeManager->processScaling(normalizedX, normalizedY);
-        }
-        else {
-            shapeManager->processRotation(normalizedX + normalizedY);
-        }
     }
 }
 

@@ -1,26 +1,11 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) : Polygon(vertices, vertexAttributeNumbers, eachAttributeNumber, this->totalVerticeNumber)
+Rectangle::Rectangle() 
 {
-	unsigned int* indices = new unsigned int[6] {
-		0, 1, 2,
-		1, 2, 3
-	};
-
-	this->indices = indices;
-	this->totalVerticeNumber = 4;
+	
 }
 
-Rectangle::Rectangle() {
-	
-	float* vertices = new float[12] {
-		// vertex  
-		-0.2, 0.0, 0,
-		-0.2, 0.4, 0,
-		0.2, 0.0, 0,
-		0.2, 0.4, 0,
-	};
-
+Rectangle::Rectangle(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) {
 	unsigned int* indices = new unsigned int[6] {
 		0, 1, 2,
 		1, 2, 3
@@ -34,8 +19,8 @@ Rectangle::Rectangle() {
 
 	this->verticeAttributes = vertices;
 	this->indices = indices;
-	this->vertexAttributeNumbers.push_back(3);
-	this->eachAttributeNumber = 3;
+	this->vertexAttributeNumbers = vertexAttributeNumbers;
+	this->eachAttributeNumber = eachAttributeNumber;
 	this->totalVerticeNumber = 4;
 	this->totalPointNumber = 4;
 	this->totalIndiceNumber = 3 * (this->totalPointNumber - 2);

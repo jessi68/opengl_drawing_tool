@@ -28,6 +28,12 @@
     <Filter Include="소스 파일\shape">
       <UniqueIdentifier>{2c06fb16-89dd-434c-9eff-2366923d61b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\coordinate">
+      <UniqueIdentifier>{24b83653-e012-4cc5-a672-528c85fe37e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\coordinate">
+      <UniqueIdentifier>{eb88b99a-6b5e-46bb-b01e-099ac2f8b3fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -94,10 +100,13 @@
       <Filter>소스 파일\shape</Filter>
     </ClCompile>
     <ClCompile Include="Coordinate.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\coordinate</Filter>
     </ClCompile>
     <ClCompile Include="TransformCoordinate.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\coordinate</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleCoordinate.cpp">
+      <Filter>소스 파일\coordinate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,10 +183,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Coordinate.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\coordinate</Filter>
     </ClInclude>
     <ClInclude Include="TransformCoordinate.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleCoordinate.h">
+      <Filter>헤더 파일\coordinate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

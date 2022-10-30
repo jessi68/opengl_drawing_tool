@@ -1,3 +1,6 @@
+#ifndef LINES_H
+#define LINES_H
+
 #include "Shape.h"
 
 //rectangle 로 그리기
@@ -12,3 +15,4 @@ public:
 	void render() override;
 };
 
+#endif

@@ -45,4 +45,6 @@ public:
 	void processRotation(float angle);
 	void setDimension(DIMENSION dimension);
 	void processMouseMovement(float xoffset, float yoffset);
+	void changeToTranslationModeIn3d();
+	void changeToScaleModeIn3d();
 };
