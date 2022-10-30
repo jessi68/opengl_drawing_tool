@@ -64,9 +64,9 @@ void ThreeDimensionalFigure::rotate(float angle)
 	this->matrix = rotationMatrix * this->matrix;
 }
 
-void ThreeDimensionalFigure::renderCoordinate()
+void ThreeDimensionalFigure::renderCoordinate(Shader * shader)
 {
-	this->coordinate->render();
+	this->coordinate->render(shader);
 }
 
 void ThreeDimensionalFigure::changeToScaleMode()

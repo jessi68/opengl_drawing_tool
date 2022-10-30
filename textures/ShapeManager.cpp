@@ -119,8 +119,8 @@ void ShapeManager::renderAll()
 
             if (this->selectedThreeDimensionalFigureIndex == i) {
                 threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
-                this->basic3DShader->setVec3("color", 0.0, 0.0, 1.0);
-                threeDimensionFigures[i]->renderCoordinate();
+                this->basic3DShader->setVec3("color", 0.0, 0.0, 0.0);
+                threeDimensionFigures[i]->renderCoordinate(basic3DShader);
             }
         }
     }
