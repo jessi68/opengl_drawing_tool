@@ -11,17 +11,17 @@ ScaleCoordinate::ScaleCoordinate(float x, float y, float z)
 	};
 
 	float* yVertices = new float[12] {
-		-0.008, y, 0.0,
-	    -0.008, y + (float)0.016, 0,
-		0.008, y, 0.0,
-	    0.008, y + (float)0.016, 0
+		-0.006, y, 0.0,
+	    -0.006, y + (float)0.016, 0,
+		0.006, y, 0.0,
+	    0.006, y + (float)0.016, 0
 	};
 
 	float* zVertices = new float[12] {
-		0.0, 0.007, z,
-		0.0, -0.007, z,
-		0.0, 0.007, z + (float)0.02,
-		0.0, -0.007, z + (float) 0.02
+		0.0, 0.005, z,
+		0.0, -0.005, z,
+		0.0, 0.005, z + (float)0.02,
+		0.0, -0.005, z + (float) 0.02
  	};
 
 	// 기회되면 const paeamerer 로 바꾸기 vector 같은 경우에는 push back 할 때 constructor 불러옴. 
