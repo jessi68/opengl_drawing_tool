@@ -2,7 +2,6 @@
 
 void ThreeDimensionalFigure::initialize() 
 {
-	cout << "it is work" << endl;
 	transformCoordinate = new TransformCoordinate();
 	scaleCoordinate = new ScaleCoordinate();
 	coordinate = transformCoordinate;
@@ -72,7 +71,6 @@ void ThreeDimensionalFigure::renderCoordinate(Shader * shader)
 void ThreeDimensionalFigure::changeToScaleMode()
 {
 	this->coordinate = scaleCoordinate;
-	cout << "change to scale mode" << endl;
 }
 
 void ThreeDimensionalFigure::changeToTransfomationMode()
