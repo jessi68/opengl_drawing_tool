@@ -27,19 +27,11 @@ ScaleCoordinate::ScaleCoordinate(float x, float y, float z)
 	// 기회되면 const paeamerer 로 바꾸기 vector 같은 경우에는 push back 할 때 constructor 불러옴. 
 	// 스터디 때 물어보기 (vector 로 하니까 되네 triangle 생성자 호출되면 렌더링이 안됨) (default constructor 에 아무것도 없는디...)
 
-	this->rectangles.push_back(new Rectangle(xVertices));
-	this->rectangles.push_back(new Rectangle(yVertices));
-	this->rectangles.push_back(new Rectangle(zVertices));
+	this->polygons.push_back(new Rectangle(xVertices));
+	this->polygons.push_back(new Rectangle(yVertices));
+	this->polygons.push_back(new Rectangle(zVertices));
 }
 
 ScaleCoordinate::~ScaleCoordinate()
 {
-}
-
-void ScaleCoordinate::renderHeel()
-{
-	for (int i = 0; i < 3; i++) {
-		this->rectangles[i]->render();
-	}
-
 }
