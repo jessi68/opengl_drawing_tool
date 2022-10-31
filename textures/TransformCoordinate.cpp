@@ -8,14 +8,14 @@ TransformCoordinate::TransformCoordinate(float x, float y, float z)
 
 	float* xVertices = new float[9] {
 		// vertex  
-		x, 0.007, 0,
-		x + (float) 0.01, 0.00, 0.005,
-		x, -0.007, 0.0
+		x, 0.014, 0,
+		x + (float) 0.02, 0.00, 0.01,
+		x, -0.014, 0.0
 	};
 	float* yVertices = new float[9] {
-		0, y + (float) 0.016, 0,
-		-0.008, y, 0.0,
-		0.008, y, 0.0
+		0, y + (float) 0.032, 0,
+		-0.016, y, 0.0,
+		0.016, y, 0.0
 	};
 
 	float* zVertices = new float[9] {

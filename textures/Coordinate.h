@@ -8,12 +8,15 @@ class Coordinate
 {
 protected:
 	Lines lines;
-	int colors[3][3];
+	GLfloat colors[3][3];
 	vector<Polygon*> polygons;
+	static int COORDINATE_NUMBER;
 public:
     void render(Shader * shader);
+	Coordinate(GLfloat colors[3][3]);
 	Coordinate();
 	virtual ~Coordinate();
+	int isSameWithOneOfColors(GLfloat color[3]);
 };
 
 #endif

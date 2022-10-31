@@ -6,6 +6,12 @@
 
 class ThreeDimensionalFigure: public Shape
 {
+private:
+	void initialize();
+	TransformCoordinate* transformCoordinate;
+	ScaleCoordinate* scaleCoordinate;
+	// downcasting 포인터에서만 working!
+	Coordinate* coordinate;
 public:
 	ThreeDimensionalFigure();
 	ThreeDimensionalFigure(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber,  unsigned int totalVerticeNumber);
@@ -15,15 +21,10 @@ public:
 	void changeToScaleMode();
 	void changeToTransfomationMode();
 	void translation(float dx, float dy, float dz);
-	void scale(float sx, float sy, float sz);
+	void scale(float svalue, int index);
 	void rotate(float angle);
 	void renderCoordinate(Shader * shader);
-private:
-	void initialize();
-	TransformCoordinate * transformCoordinate;
-	ScaleCoordinate* scaleCoordinate;
-	// downcasting 포인터에서만 working!
-	Coordinate * coordinate;
+	int isScalingPossible(GLfloat color[3]);
 };
 
 #endif

@@ -27,6 +27,7 @@ private:
 	Camera * camera;
 	glm::mat4 projection;
 	static void Destroy();
+	bool isValidIndex3d(int index);
 public:
 	/**
 	* Singletons should not be cloneable.
@@ -44,7 +45,7 @@ public:
 	void processScaling(float sx, float sy);
 	void processRotation(float angle);
 	void setDimension(DIMENSION dimension);
-	void processMouseMovement(float xoffset, float yoffset);
 	void changeToTranslationModeIn3d();
 	void changeToScaleModeIn3d();
+	void processScalingIn3d(GLfloat color[3], int index, float offset);
 };

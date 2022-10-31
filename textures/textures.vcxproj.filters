@@ -34,18 +34,18 @@
     <Filter Include="소스 파일\coordinate">
       <UniqueIdentifier>{eb88b99a-6b5e-46bb-b01e-099ac2f8b3fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\utils">
+      <UniqueIdentifier>{2926ab0a-fac8-4c90-87b2-b8c3ab79f3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\utils">
+      <UniqueIdentifier>{1044b8e2-ba27-4aa9-a8bf-b75f74214e11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shaders\Opengl_projet\glad.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
@@ -73,9 +73,6 @@
       <Filter>소스 파일\imgui</Filter>
     </ClCompile>
     <ClCompile Include="ShapeManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PolygonAlgorithm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Polygon.cpp">
@@ -108,15 +105,18 @@
     <ClCompile Include="ScaleCoordinate.cpp">
       <Filter>소스 파일\coordinate</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>소스 파일\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PolygonAlgorithm.cpp">
+      <Filter>소스 파일\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
@@ -149,9 +149,6 @@
     <ClInclude Include="ShapeManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PolygonAlgorithm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>헤더 파일\shape</Filter>
     </ClInclude>
@@ -173,15 +170,6 @@
     <ClInclude Include="ThreeDimensionalFigure.h">
       <Filter>헤더 파일\shape</Filter>
     </ClInclude>
-    <ClInclude Include="Dimension.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Lines.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenProperty.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Coordinate.h">
       <Filter>헤더 파일\coordinate</Filter>
     </ClInclude>
@@ -190,6 +178,24 @@
     </ClInclude>
     <ClInclude Include="ScaleCoordinate.h">
       <Filter>헤더 파일\coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="Lines.h">
+      <Filter>헤더 파일\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenProperty.h">
+      <Filter>헤더 파일\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dimension.h">
+      <Filter>헤더 파일\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>헤더 파일\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>헤더 파일\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PolygonAlgorithm.h">
+      <Filter>헤더 파일\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -94,7 +94,7 @@ void ShapeManager::renderAll()
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
         for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
-            glStencilFunc(GL_ALWAYS, i + 1, -1);
+            glStencilFunc(GL_ALWAYS, i + 1, 1);
 
             if (this->selectedThreeDimensionalFigureIndex == i) {
                 glm::mat4 changedMatrix = threeDimensionFigures[i]->getMatrix();
@@ -133,13 +133,14 @@ void ShapeManager::selectPolygon(Point point)
             this->selectedPolygonIndex = i;
             break;
         }
-    }
-    
+    }   
 }
 
 void ShapeManager::selectThreeDimensionalFigure(int index)
 {
-    this->selectedThreeDimensionalFigureIndex = index;
+    if (isValidIndex3d(index)) {
+        this->selectedThreeDimensionalFigureIndex = index;
+    }
 }
 
 void ShapeManager::processTranslation(float dx, float dy, float dz)
@@ -176,11 +177,6 @@ void ShapeManager::setDimension(DIMENSION dimension)
     this->dimension = dimension;
 }
 
-void ShapeManager::processMouseMovement(float xoffset, float yoffset)
-{
-    this->camera->ProcessMouseMovement(xoffset, yoffset);
-}
-
 void ShapeManager::changeToTranslationModeIn3d() {
     if (selectedThreeDimensionalFigureIndex != -1) {
         this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->changeToTransfomationMode();
@@ -190,6 +186,25 @@ void ShapeManager::changeToTranslationModeIn3d() {
 void ShapeManager::changeToScaleModeIn3d() {
     if (selectedThreeDimensionalFigureIndex != -1) {
         this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->changeToScaleMode();
+    }
+}
+
+bool ShapeManager::isValidIndex3d(int index) {
+    return index >= 0 && index < this->threeDimensionalFigureNumber;
+}
+
+void ShapeManager::processScalingIn3d(GLfloat color[3], int index, float offset) {
+    int coordinateIndex;
+    if (index == selectedThreeDimensionalFigureIndex) {
+        coordinateIndex = this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->isScalingPossible(color);
+       
+        if (coordinateIndex != -1) {
+            if (coordinateIndex == 2) {
+                //offset = offset * -1;
+            }
+            cout <<  "offset" << offset << endl;
+            this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->scale(offset, coordinateIndex);
+        }
     }
 }
 

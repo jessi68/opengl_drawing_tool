@@ -38,14 +38,11 @@ void ThreeDimensionalFigure::translation(float dx, float dy, float dz)
 	this->matrix = transMatrix * this->matrix;
 }
 
-void ThreeDimensionalFigure::scale(float sx, float sy, float sz)
+void ThreeDimensionalFigure::scale(float svalue, int index)
 {
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-
-	scaleMatrix[0][0] = 1 + sx;
-	scaleMatrix[1][1] = 1 + sy;
-	scaleMatrix[2][2] = 1 + sz;
-
+	cout << index << " index" << endl;
+	scaleMatrix[index][index] = 1 + svalue;
 	this->matrix = scaleMatrix * this->matrix;
 }
 
@@ -76,4 +73,15 @@ void ThreeDimensionalFigure::changeToScaleMode()
 void ThreeDimensionalFigure::changeToTransfomationMode()
 {
 	this->coordinate = transformCoordinate;
+}
+
+int ThreeDimensionalFigure::isScalingPossible(GLfloat color[3])
+{
+	int index = this->coordinate->isSameWithOneOfColors(color);
+	
+	if (index != -1 && this->coordinate == scaleCoordinate) {
+		return index;
+	}
+
+	return -1;
 }

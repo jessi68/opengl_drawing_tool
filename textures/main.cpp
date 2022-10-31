@@ -22,6 +22,8 @@
 #include <iostream>
 #include <stdio.h>
 
+using namespace std;
+
 enum TRANSFORMATION_MODE
 {
     ROTATION,
@@ -30,6 +32,7 @@ enum TRANSFORMATION_MODE
 
 void makePolygonUI(ShapeManager* shapeManager);
 void makeTransformationUI();
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void processInput(GLFWwindow* window);
@@ -81,6 +84,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
 
     // tell GLFW to capture our mouse
@@ -121,11 +125,8 @@ int main()
   
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-;
 
-    unsigned int diffuseMap = loadTexture("C:/Users/GTHR/container2.png");
-    unsigned int specularMap = loadTexture("C:/Users/GTHR/specular.png");
-  
+ 
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -290,70 +291,88 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         isMouseClicked = true;
+        firstMouse = true;
         double x, y;
         //getting cursor position
         glfwGetCursorPos(window, &x, &y);
 
         if (dimension == TWO) {
             Point currentPoint = changeFromWindowToWorld(x, y);
-            //cout << "current point" << currentPoint.x << " " << currentPoint.y << endl;
+          
             shapeManager->selectPolygon(currentPoint);
         }
         else {
             GLuint index;
-            GLbyte color[4];
+           
             glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-            cout << "index " << index << endl;
+           
+            
             // 배경, ui 등을 클릭했을 때
             if (index == 0) {
                 return;
             }
-            //printf(" color %02hhx%02hhx%02hhx%02hhx", color[0], color[1], color[2], color[3]);
 
+            //cout << index << "click " << index << endl;
             shapeManager->selectThreeDimensionalFigure(index - 1);
+
         }
     }
+
 
     if (button == GLFW_MOUSE_BUTTON_LEFT and action == GLFW_RELEASE) {
         isMouseClicked = false;
     }
 }
 
-// utility function for loading a 2D texture from file
-// ---------------------------------------------------
-unsigned int loadTexture(char const* path)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
+    GLbyte color[3];
+    GLfloat colorf[3];
+    GLuint index;
+    GLfloat depth;
 
-    int width, height, nrComponents;
-    unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
+    if (isMouseClicked) {
+        float xpos = static_cast<float>(xposIn);
+        float ypos = static_cast<float>(yposIn);
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        if (firstMouse)
+        {
+           
+            lastX = xpos;
+            lastY = ypos;
+            firstMouse = false;
+        }
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
 
-        stbi_image_free(data);
+        lastX = xpos;
+        lastY = ypos;
+
+        float normalizedX = xoffset * 2 / SCR_WIDTH;
+        float normalizedY = yoffset * 2 / SCR_HEIGHT;
+
+        if (dimension == TWO) {
+            if (transformationMode == SCALE) {
+                shapeManager->processScaling(normalizedX, normalizedY);
+            }
+            else {
+                shapeManager->processRotation(normalizedX + normalizedY);
+            }
+        }
+        else {
+            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_RGB, GL_BYTE, &color);
+            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+
+            colorf[0] = color[0] / (float)127;
+            colorf[1] = color[1] / (float)127;
+            colorf[2] = color[2] / (float)127;
+         
+            cout << "xoffset "  << xoffset << endl;
+            cout << "yoffest " << yoffset << endl;
+            cout << "depth" << depth << endl;
+            shapeManager->processScalingIn3d(colorf, index - 1, 0.3 * (xoffset + yoffset));
+        }
     }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
 }
