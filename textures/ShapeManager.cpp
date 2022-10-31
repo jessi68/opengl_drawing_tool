@@ -6,6 +6,7 @@ ShapeManager::ShapeManager()
 {
     this->basic2DShader = new Shader("2d_shape.vert", "2d_shape.frag");
     this->basic3DShader = new Shader("3d_shape.vert", "3d_shape.frag");
+    
     this->camera = new Camera(glm::vec3(-0.3f, 0.2f, 1.0f));
     this->projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     this->polygonNumber = 0;
@@ -81,37 +82,30 @@ void ShapeManager::renderAll()
         }
     }
     else {
-        glDisable(GL_DEPTH_TEST);
-
+  
         this->basic3DShader->use();
         this->basic3DShader->setMat4("projection", projection);
         this->basic3DShader->setMat4("view", camera->GetViewMatrix());
+        this->basic3DShader->setFloat("znear", 0.1);
+        this->basic3DShader->setFloat("zfar", 100);
 
         glClearStencil(0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+        glEnable(GL_DEPTH_TEST);
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+            cout << "Error";
         glEnable(GL_STENCIL_TEST);
+        glDepthFunc(GL_LESS);
+        glDepthRange(0.1, 100);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
         for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
             glStencilFunc(GL_ALWAYS, i + 1, 1);
 
             if (this->selectedThreeDimensionalFigureIndex == i) {
-                glm::mat4 changedMatrix = threeDimensionFigures[i]->getMatrix();
-                glm::mat4 scaleMatrix = glm::mat4(1.0f);
-                scaleMatrix[0][0] = 1.1f;
-                scaleMatrix[1][1] = 1.1f;
-                scaleMatrix[2][2] = 1.1f;
-                changedMatrix = changedMatrix * scaleMatrix;
-
-                glm::mat4 transMatrix = glm::mat4(1.0f);
-                transMatrix[3][0] = -0.0;
-                transMatrix[3][1] = -0.01;
-
-                changedMatrix = transMatrix * changedMatrix;
-                basic3DShader->setMat4("transformation", changedMatrix);
-                basic3DShader->setVec3("color", 1.0, 1.0, 0.0);
-                threeDimensionFigures[i]->render();
+                
             }
            
             threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
@@ -193,14 +187,16 @@ bool ShapeManager::isValidIndex3d(int index) {
     return index >= 0 && index < this->threeDimensionalFigureNumber;
 }
 
-void ShapeManager::processScalingIn3d(GLfloat color[3], int index, float offset) {
+void ShapeManager::processScalingIn3d(GLfloat color[3], int index, float offset, float depthOffset) {
     int coordinateIndex;
     if (index == selectedThreeDimensionalFigureIndex) {
         coordinateIndex = this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->isScalingPossible(color);
        
         if (coordinateIndex != -1) {
             if (coordinateIndex == 2) {
-                //offset = offset * -1;
+                cout << " z z" << endl;
+                offset = depthOffset;
+         
             }
             cout <<  "offset" << offset << endl;
             this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->scale(offset, coordinateIndex);

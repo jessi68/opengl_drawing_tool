@@ -47,5 +47,5 @@ public:
 	void setDimension(DIMENSION dimension);
 	void changeToTranslationModeIn3d();
 	void changeToScaleModeIn3d();
-	void processScalingIn3d(GLfloat color[3], int index, float offset);
+	void processScalingIn3d(GLfloat color[3], int index, float offset, float depthOffset);
 };

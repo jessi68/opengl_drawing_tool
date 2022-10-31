@@ -45,6 +45,7 @@ DIMENSION dimension = THREE;
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
+float lastDepth;
 bool firstMouse = true;
 bool isUIClicked = false;
 bool isMouseClicked = false;
@@ -126,7 +127,7 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
 
- 
+
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -303,10 +304,12 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         }
         else {
             GLuint index;
+            GLfloat depth;
            
             glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-           
-            
+            glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+            cout << "depth " << depth << endl;
+
             // 배경, ui 등을 클릭했을 때
             if (index == 0) {
                 return;
@@ -337,14 +340,16 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
         if (firstMouse)
         {
-           
+            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
             lastX = xpos;
             lastY = ypos;
+            lastDepth = depth;
             firstMouse = false;
         }
 
         float xoffset = xpos - lastX;
         float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+        
 
         lastX = xpos;
         lastY = ypos;
@@ -364,6 +369,9 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
             glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
             glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_RGB, GL_BYTE, &color);
             glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+            
+            float depthOffset = depth - lastDepth;
+            lastDepth = depth;
 
             colorf[0] = color[0] / (float)127;
             colorf[1] = color[1] / (float)127;
@@ -371,8 +379,9 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
          
             cout << "xoffset "  << xoffset << endl;
             cout << "yoffest " << yoffset << endl;
-            cout << "depth" << depth << endl;
-            shapeManager->processScalingIn3d(colorf, index - 1, 0.3 * (xoffset + yoffset));
+            cout << "depthoffset " << depthOffset << endl;
+
+            shapeManager->processScalingIn3d(colorf, index - 1, 0.3 * (xoffset + yoffset), (10000) * -1 * depthOffset);
         }
     }
 }
