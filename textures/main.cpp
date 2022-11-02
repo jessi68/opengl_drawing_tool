@@ -361,8 +361,10 @@ double* crossIn3d(double start[3], double dest[3]) {
 }
 
 double* scaleDownToSphere(double* point, double squaredRadius) {
+   
+
     if (point[0] < 0.0001 && point[0] > -0.0001) {
-        point[1] = squaredRadius * 0.95;
+        point[1] = pow(squaredRadius * 0.95, 0.5);
         return point;
     }
     else {
@@ -393,12 +395,13 @@ glm::mat3 virtualTrackball(double startX, double startY, double destX,  double d
     double startNorm = norm(start, 2);
     double destNorm = norm(dest, 2);
 
-    if (startNorm > squaredRadius) {
+
+    if (startNorm * startNorm > squaredRadius) {
         start = scaleDownToSphere(start, squaredRadius);
         cout << "is scale down src" << endl;
     }
 
-    if (destNorm > squaredRadius) {
+    if (destNorm * destNorm > squaredRadius) {
         dest = scaleDownToSphere(dest, squaredRadius);
         cout << "is scale down dest" << endl;
     }
