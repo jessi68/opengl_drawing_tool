@@ -103,10 +103,6 @@ void ShapeManager::renderAll()
 
         for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
             glStencilFunc(GL_ALWAYS, i + 1, 1);
-
-            if (this->selectedThreeDimensionalFigureIndex == i) {
-                
-            }
            
             threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
             threeDimensionFigures[i]->render();
@@ -201,6 +197,13 @@ void ShapeManager::processScalingIn3d(GLfloat color[3], int index, float offset,
             cout <<  "offset" << offset << endl;
             this->threeDimensionFigures[selectedThreeDimensionalFigureIndex]->scale(offset, coordinateIndex);
         }
+    }
+}
+
+void ShapeManager::rotateIn3D(glm::mat4 rogridMatrix)
+{
+    if (this->selectedThreeDimensionalFigureIndex != -1) {
+        this->threeDimensionFigures[this->selectedThreeDimensionalFigureIndex]->transformation(rogridMatrix);
     }
 }
 

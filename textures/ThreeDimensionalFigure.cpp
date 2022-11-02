@@ -41,7 +41,6 @@ void ThreeDimensionalFigure::translation(float dx, float dy, float dz)
 void ThreeDimensionalFigure::scale(float svalue, int index)
 {
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-	cout << index << " index" << endl;
 	scaleMatrix[index][index] = 1 + svalue;
 	this->matrix = scaleMatrix * this->matrix;
 }
@@ -58,6 +57,19 @@ void ThreeDimensionalFigure::rotate(float angle)
 	rotationMatrix[1][1] = cosValue;
 
 	this->matrix = rotationMatrix * this->matrix;
+}
+
+void ThreeDimensionalFigure::transformation(glm::mat3 newMatrix)
+{
+	glm::mat4 rotationMatrix(1);
+	rotationMatrix[3][3] = 1;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			rotationMatrix[i][j] = newMatrix[i][j];
+		 }
+	}
+
+    this->matrix = rotationMatrix * this->matrix;
 }
 
 void ThreeDimensionalFigure::renderCoordinate(Shader * shader)

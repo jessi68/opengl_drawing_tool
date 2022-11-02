@@ -23,6 +23,7 @@ public:
 	void translation(float dx, float dy, float dz);
 	void scale(float svalue, int index);
 	void rotate(float angle);
+	void transformation(glm::mat3 newMatrix);
 	void renderCoordinate(Shader * shader);
 	int isScalingPossible(GLfloat color[3]);
 };

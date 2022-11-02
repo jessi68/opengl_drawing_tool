@@ -36,6 +36,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void processInput(GLFWwindow* window);
+float distance(float x, float y, float destX, float destY);
 
 unsigned int loadTexture(const char* path);
 
@@ -49,6 +50,7 @@ float lastDepth;
 bool firstMouse = true;
 bool isUIClicked = false;
 bool isMouseClicked = false;
+bool isRotation = false;
 
 // timing
 float speed = 0.3f;
@@ -232,8 +234,12 @@ void makeTransformationUI()
         if (ImGui::Button("trnaformation")) {
             shapeManager->changeToTranslationModeIn3d();
         } 
-        if (ImGui::Button("Scale")) {
+        if (ImGui::Button("scale")) {
             shapeManager->changeToScaleModeIn3d();
+        }
+        if (ImGui::Button("rotation")) {
+            cout << "rrrr" << endl;
+            isRotation = true;
         }
     }
   
@@ -321,10 +327,113 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         }
     }
 
-
     if (button == GLFW_MOUSE_BUTTON_LEFT and action == GLFW_RELEASE) {
         isMouseClicked = false;
     }
+}
+
+float distance(float x, float y, float destX, float destY) {
+    return pow((x - destX) * (x - destX) + (y - destY) * (y - destY), 0.5);
+}
+
+double norm(double * point, int size) {
+    double value = 0;
+
+    for (int i = 0; i < size; i++) {
+        value += point[i] * point[i];
+    }
+
+    return (double) pow(value, 0.5);
+}
+
+double cross(double start[2], double dest[2]) {
+    return start[0] * dest[1] - start[1] * dest[0];
+}
+
+double* crossIn3d(double start[3], double dest[3]) {
+    double * result = new double[3] {
+        start[1] * dest[2] - start[2] * dest[1], 
+        start[2] * dest[0] - start[0] * dest[2],
+        start[0] * dest[1] - start[1] * dest[0]
+    };
+
+    return result;
+}
+
+double* scaleDownToSphere(double* point, double squaredRadius) {
+    if (point[0] < 0.0001 && point[0] > -0.0001) {
+        point[1] = squaredRadius * 0.95;
+        return point;
+    }
+    else {
+        float previousX = point[0];
+        if (point[0] < 0) {
+            point[0] = -1 * pow((squaredRadius * 0.95) / (1 + ((point[1] * point[1]) / (point[0] * point[0]))), 0.5);
+        }
+        else {
+            point[0] = pow((squaredRadius * 0.95) / (1 + ((point[1] * point[1]) / (point[0] * point[0]))), 0.5);
+        }
+        point[1] = (point[1] / previousX) * point[0];
+        return point;
+    }
+}
+
+glm::mat3 virtualTrackball(double startX, double startY, double destX,  double destY) {
+
+    double radius = min(SCR_WIDTH, SCR_HEIGHT) / (double)2;
+    cout << "radius " << radius << endl;
+    float squaredRadius = radius * radius;
+
+    float half_width = SCR_WIDTH / (double) 2;
+    float half_height = SCR_HEIGHT / (double) 2;
+
+    double* start = new double[2] {startX - half_width, startY - half_height};
+    double* dest = new double[2] { destX - half_width, destY - half_height };
+
+    double startNorm = norm(start, 2);
+    double destNorm = norm(dest, 2);
+
+    if (startNorm > squaredRadius) {
+        start = scaleDownToSphere(start, squaredRadius);
+        cout << "is scale down src" << endl;
+    }
+
+    if (destNorm > squaredRadius) {
+        dest = scaleDownToSphere(dest, squaredRadius);
+        cout << "is scale down dest" << endl;
+    }
+
+    double theta = cross(start, dest) / (startNorm * destNorm);
+    double start3D[3] = { start[0], start[1], pow(squaredRadius - (start[0] * start[0] + start[1] * start[1]), 0.5) };
+    double dest3D[3] = { dest[0], dest[1], pow(squaredRadius - (dest[0] * dest[0] + dest[1] * dest[1]), 0.5) };
+
+    double* normalVector = crossIn3d(start3D, dest3D);
+    double normOfVector = norm(normalVector, 3);
+
+    for (int i = 0; i < 3; i++) {
+        cout << normalVector[i] << endl;
+        normalVector[i] = normalVector[i] / normOfVector;
+        cout << normalVector[i] << endl;
+    }
+
+    cout << endl;
+
+    glm::mat3 crossProductK(0);
+    crossProductK[1][0] = -1 * normalVector[2];
+    crossProductK[2][0] = normalVector[1];
+    crossProductK[0][1] = normalVector[2];
+    crossProductK[2][1] = -normalVector[0];
+    crossProductK[0][2] = -normalVector[1];
+    crossProductK[1][2] = normalVector[0];
+
+    //{ {0, -1 * normalVector[2], normalVector[1]}, { normalVector[2], 0, -normalVector[0] }, { -normalVector[1], normalVector[0], 0 }};
+
+    delete[] start;
+    delete[] dest;
+    delete[]normalVector;
+
+    cout << theta << " theta" << endl;
+    return glm::mat3(1.0f) + (float) theta * crossProductK + (crossProductK * crossProductK) * (float) (1 - cos(theta));
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -333,6 +442,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     GLfloat colorf[3];
     GLuint index;
     GLfloat depth;
+    float dist;
 
     if (isMouseClicked) {
         float xpos = static_cast<float>(xposIn);
@@ -350,10 +460,6 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
         float xoffset = xpos - lastX;
         float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
         
-
-        lastX = xpos;
-        lastY = ypos;
-
         float normalizedX = xoffset * 2 / SCR_WIDTH;
         float normalizedY = yoffset * 2 / SCR_HEIGHT;
 
@@ -366,22 +472,32 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
             }
         }
         else {
-            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_RGB, GL_BYTE, &color);
-            glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-            
-            float depthOffset = depth - lastDepth;
-            lastDepth = depth;
+            if (!isRotation) {
+                glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+                glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_RGB, GL_BYTE, &color);
+                glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+                float depthOffset = depth - lastDepth;
+                lastDepth = depth;
 
-            colorf[0] = color[0] / (float)127;
-            colorf[1] = color[1] / (float)127;
-            colorf[2] = color[2] / (float)127;
-         
-            cout << "xoffset "  << xoffset << endl;
-            cout << "yoffest " << yoffset << endl;
-            cout << "depthoffset " << depthOffset << endl;
+                colorf[0] = color[0] / (float)127;
+                colorf[1] = color[1] / (float)127;
+                colorf[2] = color[2] / (float)127;
 
-            shapeManager->processScalingIn3d(colorf, index - 1, 0.3 * (xoffset + yoffset), (10000) * -1 * depthOffset);
+                shapeManager->processScalingIn3d(colorf, index - 1, 0.1 * (xoffset + yoffset), (10000) * -1 * depthOffset);
+            }
+            else {
+                cout << "rotation" << endl;
+  
+                float dist = distance(lastX, lastY, xpos, ypos);
+                cout << dist << " distance" << endl;
+                if (dist > 0) {
+                    glm::mat4 rogridRotation = virtualTrackball(lastX, lastY, xpos, ypos);
+                    shapeManager->rotateIn3D(rogridRotation);
+                }
+            }
         }
+
+        lastX = xpos;
+        lastY = ypos;
     }
 }
