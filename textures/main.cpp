@@ -356,15 +356,12 @@ double* crossIn3d(double start[3], double dest[3]) {
         start[2] * dest[0] - start[0] * dest[2],
         start[0] * dest[1] - start[1] * dest[0]
     };
-
     return result;
 }
 
 double* scaleDownToSphere(double* point, double squaredRadius) {
-   
-
     if (point[0] < 0.0001 && point[0] > -0.0001) {
-        point[1] = pow(squaredRadius * 0.95, 0.5);
+        point[1] = squaredRadius * 0.95;
         return point;
     }
     else {
@@ -383,7 +380,7 @@ double* scaleDownToSphere(double* point, double squaredRadius) {
 glm::mat3 virtualTrackball(double startX, double startY, double destX,  double destY) {
 
     double radius = min(SCR_WIDTH, SCR_HEIGHT) / (double)2;
-    cout << "radius " << radius << endl;
+
     float squaredRadius = radius * radius;
 
     float half_width = SCR_WIDTH / (double) 2;
@@ -392,9 +389,9 @@ glm::mat3 virtualTrackball(double startX, double startY, double destX,  double d
     double* start = new double[2] {startX - half_width, startY - half_height};
     double* dest = new double[2] { destX - half_width, destY - half_height };
 
+
     double startNorm = norm(start, 2);
     double destNorm = norm(dest, 2);
-
 
     if (startNorm * startNorm > squaredRadius) {
         start = scaleDownToSphere(start, squaredRadius);
@@ -413,6 +410,8 @@ glm::mat3 virtualTrackball(double startX, double startY, double destX,  double d
     double* normalVector = crossIn3d(start3D, dest3D);
     double normOfVector = norm(normalVector, 3);
 
+    cout << normOfVector << " norm" << endl;
+    cout << "normal vector" << endl;
     for (int i = 0; i < 3; i++) {
         cout << normalVector[i] << endl;
         normalVector[i] = normalVector[i] / normOfVector;
@@ -431,9 +430,9 @@ glm::mat3 virtualTrackball(double startX, double startY, double destX,  double d
 
     //{ {0, -1 * normalVector[2], normalVector[1]}, { normalVector[2], 0, -normalVector[0] }, { -normalVector[1], normalVector[0], 0 }};
 
+    delete[] normalVector;
     delete[] start;
     delete[] dest;
-    delete[]normalVector;
 
     cout << theta << " theta" << endl;
     return glm::mat3(1.0f) + (float) theta * crossProductK + (crossProductK * crossProductK) * (float) (1 - cos(theta));
