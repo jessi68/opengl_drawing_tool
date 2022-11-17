@@ -97,3 +97,9 @@ int ThreeDimensionalFigure::isScalingPossible(GLfloat color[3])
 
 	return -1;
 }
+
+void ThreeDimensionalFigure::setPosition(float dx, float dy, float dz) {
+	this->matrix[3][0] = dx;
+	this->matrix[3][1] = dy;
+	this->matrix[3][2] = dz;
+}

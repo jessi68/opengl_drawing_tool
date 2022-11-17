@@ -1,22 +1,7 @@
 #include "Cube.h"
 
-Cube::Cube(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int * indices) : ThreeDimensionalFigure(vertices, vertexAttributeNumbers, eachAttributeNumber, 8) {
-	this->indices = indices;
-}
-
-Cube::Cube() {
-	float* vertices = new float[24] {
-		-0.1f, 0.1f, -0.1f,  //Point A 0
-		-0.1f, 0.1f, 0.1f,//Point B 1
-		0.1f, 0.1f, -0.1f,//Point C 2
-		0.1f, 0.1f, 0.1f, //Point D 3
-		-0.1f, -0.1f, -0.1f, //Point E 4
-		-0.1f, -0.1f, 0.1f,//Point F 5
-		0.1f, -0.1f, -0.1f,//Point G 6
-		0.1f, -0.1f, 0.1f//Point H 7
-	};
-
-
+Cube::Cube(float* vertices, vector<unsigned int> vertexAttributeNumbers, unsigned int eachAttributeNumber) {
+	
 	unsigned int* indices = new unsigned int[36] {
 		/*Above ABC,BCD*/
 		0, 1, 2,
@@ -47,7 +32,6 @@ Cube::Cube() {
 	this->totalCoordinateNumber = eachAttributeNumber * totalVerticeNumber;
 	this->color = glm::vec3(1.0, 0.5, 0);
 	this->matrix = glm::mat4(1.0f);
-
 	this->initiliazeVertexBufferDatas();
 }
 

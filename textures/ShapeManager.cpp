@@ -33,6 +33,11 @@ void ShapeManager::Destroy() {
     delete ShapeManager::drawingManager;
 }
 
+void ShapeManager::addEffect(RainEffect* rainEffect)
+{
+    this->rainEffect = rainEffect;
+}
+
 // const 객체를 함수 파라미터로 받아오면 멤버함수 불러오는거 자체가 불가능
 void ShapeManager::addPolygon(Polygon * polygon)
 {
@@ -101,16 +106,23 @@ void ShapeManager::renderAll()
         glDepthRange(0.1, 100);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
-            glStencilFunc(GL_ALWAYS, i + 1, 1);
-           
-            threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
-            threeDimensionFigures[i]->render();
+        if (this->rainEffect != NULL) {
+            this->rainEffect->setShader(this->basic3DShader);
+            this->rainEffect->render();
+        }
+        else {
 
-            if (this->selectedThreeDimensionalFigureIndex == i) {
+            for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
+                glStencilFunc(GL_ALWAYS, i + 1, 1);
+
                 threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
-                this->basic3DShader->setVec3("color", 0.0, 0.0, 0.0);
-                threeDimensionFigures[i]->renderCoordinate(basic3DShader);
+                threeDimensionFigures[i]->render();
+
+                if (this->selectedThreeDimensionalFigureIndex == i) {
+                    threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
+                    this->basic3DShader->setVec3("color", 0.0, 0.0, 0.0);
+                    threeDimensionFigures[i]->renderCoordinate(basic3DShader);
+                }
             }
         }
     }

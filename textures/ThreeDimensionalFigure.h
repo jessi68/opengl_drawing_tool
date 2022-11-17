@@ -25,6 +25,7 @@ public:
 	void rotate(float angle);
 	void transformation(glm::mat3 newMatrix);
 	void renderCoordinate(Shader * shader);
+	void setPosition(float dx, float dy, float dz);
 	int isScalingPossible(GLfloat color[3]);
 };
 

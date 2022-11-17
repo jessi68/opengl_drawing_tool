@@ -16,6 +16,7 @@
 #include "Polygon.h"
 #include "Rectangle.h"
 #include "Cube.h"
+#include "RainEffect.h"
 #include "ShapeManager.h"
 #include "ScreenProperty.h"
 
@@ -157,6 +158,7 @@ int main()
         makeTransformationUI();
         ImGui::End();
 
+
         shapeManager->renderAll();
       
         ImGui::Render();
@@ -213,7 +215,20 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
     }
     else {
         if (ImGui::Button("cube")) {
-            drawingPolygonManager->addThreeDimensionalFigure(new Cube());
+            float* vertices = new float[24] {
+                -0.1f, 0.1f, -0.1f,  //Point A 0
+                -0.1f, 0.1f, 0.1f,//Point B 1
+                0.1f, 0.1f, -0.1f,//Point C 2
+                0.1f, 0.1f, 0.1f, //Point D 3
+                -0.1f, -0.1f, -0.1f, //Point E 4
+                -0.1f, -0.1f, 0.1f,//Point F 5
+                0.1f, -0.1f, -0.1f,//Point G 6
+                0.1f, -0.1f, 0.1f//Point H 7
+            };
+            drawingPolygonManager->addThreeDimensionalFigure(new Cube(vertices));
+        }
+        if (ImGui::Button("RainEffect")) {
+            drawingPolygonManager->addEffect(new RainEffect());
         }
     }
    

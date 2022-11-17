@@ -33,6 +33,7 @@ void Shape::initiliazeVertexBufferDatas()
 
 Shape::Shape()
 {
+
 }
 
 Shape::Shape(float* vertices, vector<unsigned int> & vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
@@ -97,6 +98,7 @@ Shape& Shape::operator=(const Shape& shape)
 
 void Shape::render()
 {
+	cout << "shape rendered" << endl;
 	glBindVertexArray(this->vao);
 	glDrawElements(GL_TRIANGLES, this->totalIndiceNumber, GL_UNSIGNED_INT, 0);
 }

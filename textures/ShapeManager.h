@@ -4,6 +4,7 @@
 #include "Dimension.h"
 #include "ThreeDimensionalFigure.h"
 #include "Camera.h"
+#include "RainEffect.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ private:
 	vector<Polygon*> polygons;
 	vector<ThreeDimensionalFigure*> threeDimensionFigures;
 	vector<Polygon*> countourPolygons;
+	RainEffect* rainEffect;
 	// 객체 두번 생성하는 거 막으려고 포인터로 함
 	Shader* basic2DShader;
 	Shader* basic3DShader;
@@ -36,6 +38,7 @@ public:
 	static ShapeManager* getInstance();
 	ShapeManager(ShapeManager& other) = delete;
 	void operator= (const ShapeManager &) = delete;
+	void addEffect(RainEffect* rainEffect);
 	void addPolygon(Polygon * polygon);
 	void addThreeDimensionalFigure(ThreeDimensionalFigure * threeDimensionalFigure);
 	void renderAll();
