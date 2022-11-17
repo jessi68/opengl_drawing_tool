@@ -41,12 +41,14 @@ void ShapeManager::addEffect(RainEffect* rainEffect)
 // const 객체를 함수 파라미터로 받아오면 멤버함수 불러오는거 자체가 불가능
 void ShapeManager::addPolygon(Polygon * polygon)
 {
+    this->rainEffect = NULL;
     polygons.push_back(polygon);
     this->polygonNumber += 1;
 }
 
 void ShapeManager::addThreeDimensionalFigure(ThreeDimensionalFigure* threeDimensionalFigure)
 {
+    this->rainEffect = NULL;
     threeDimensionFigures.push_back(threeDimensionalFigure);
     this->threeDimensionalFigureNumber += 1;
 
@@ -174,7 +176,7 @@ void ShapeManager::processRotation(float angle)
     }
 }
 
-void ShapeManager::setDimension(DIMENSION dimension)
+void ShapeManager::setDimension(TYPE dimension)
 {
     this->dimension = dimension;
 }
@@ -219,4 +221,11 @@ void ShapeManager::rotateIn3D(glm::mat4 rogridMatrix)
     }
 }
 
+void ShapeManager::moveCamera(float xoffset, float yoffset) {
+    camera->ProcessMouseMovement(xoffset, yoffset);
+}
+
+void ShapeManager::processKeyBoard(CameraMovement direction, float deltaTime) {
+    camera->ProcessKeyboard(direction, deltaTime);
+}
 ShapeManager* ShapeManager::drawingManager = nullptr;

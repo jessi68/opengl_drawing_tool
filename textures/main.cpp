@@ -43,7 +43,7 @@ unsigned int loadTexture(const char* path);
 
 // settings
 TRANSFORMATION_MODE transformationMode = SCALE;
-DIMENSION dimension = THREE;
+TYPE dimension = THREE;
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -151,14 +151,14 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        ImGui::SetNextWindowSize(ImVec2(100, 180));
+        ImGui::SetNextWindowSize(ImVec2(150, 180));
         ImGui::Begin("polygon");
         // pass singleton as parameter 
         makePolygonUI(shapeManager);
         makeTransformationUI();
         ImGui::End();
 
-
+  
         shapeManager->renderAll();
       
         ImGui::Render();
@@ -228,6 +228,7 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
             drawingPolygonManager->addThreeDimensionalFigure(new Cube(vertices));
         }
         if (ImGui::Button("RainEffect")) {
+            dimension = EFFECT;
             drawingPolygonManager->addEffect(new RainEffect());
         }
     }
@@ -236,6 +237,7 @@ void makePolygonUI(ShapeManager * drawingPolygonManager) {
 
 void makeTransformationUI() 
 {
+    ImGui::NewLine();
     ImGui::Text("transformation");
     if (dimension == TWO) {
         if (ImGui::Button("rotation")) {
@@ -246,7 +248,7 @@ void makeTransformationUI()
         }
     }
     else {
-        if (ImGui::Button("trnaformation")) {
+        if (ImGui::Button("translation")) {
             shapeManager->changeToTranslationModeIn3d();
         } 
         if (ImGui::Button("scale")) {
@@ -274,22 +276,36 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        dy = distance;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        dy = -1 * distance;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        dx = -1 * distance;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        dx = distance;
-
-    if (glfwGetKey(window, GLFW_KEY_UP)) {
-        dz = distance;
-    } if (glfwGetKey(window, GLFW_KEY_DOWN)) {
-        dz = -1 * distance;
+    if (dimension == EFFECT) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            shapeManager->processKeyBoard(FORWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            shapeManager->processKeyBoard(BACKWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            shapeManager->processKeyBoard(LEFT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            shapeManager->processKeyBoard(RIGHT, deltaTime);
     }
+    else {
 
-     shapeManager->processTranslation(dx, dy, dz);
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            dy = distance;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            dy = -1 * distance;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            dx = -1 * distance;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            dx = distance;
+
+        if (glfwGetKey(window, GLFW_KEY_UP)) {
+            dz = distance;
+        } if (glfwGetKey(window, GLFW_KEY_DOWN)) {
+            dz = -1 * distance;
+        }
+
+
+        shapeManager->processTranslation(dx, dy, dz);
+    }
         
 }
 
@@ -488,7 +504,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
                 shapeManager->processRotation(normalizedX + normalizedY);
             }
         }
-        else {
+        else if(dimension == THREE) {
             if (!isRotation) {
                 glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
                 glReadPixels(xpos, SCR_HEIGHT - ypos - 1, 1, 1, GL_RGB, GL_BYTE, &color);
@@ -513,8 +529,15 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
                 }
             }
         }
+        else {
+            shapeManager->moveCamera(xoffset, yoffset);
+        }
 
         lastX = xpos;
         lastY = ypos;
     }
+
+
+
+
 }

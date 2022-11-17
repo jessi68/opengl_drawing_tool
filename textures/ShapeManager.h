@@ -12,7 +12,7 @@ class ShapeManager
 {
 private:
 	static ShapeManager* drawingManager;
-	DIMENSION dimension = THREE;
+	TYPE dimension = THREE;
 	ShapeManager();
 	vector<Polygon*> polygons;
 	vector<ThreeDimensionalFigure*> threeDimensionFigures;
@@ -47,9 +47,11 @@ public:
 	void processTranslation(float dx, float dy, float dz);
 	void processScaling(float sx, float sy);
 	void processRotation(float angle);
-	void setDimension(DIMENSION dimension);
+	void setDimension(TYPE dimension);
 	void changeToTranslationModeIn3d();
 	void changeToScaleModeIn3d();
 	void processScalingIn3d(GLfloat color[3], int index, float offset, float depthOffset);
 	void rotateIn3D(glm::mat4 rogridMatrix);
+	void moveCamera(float xoffset, float yoffset);
+	void processKeyBoard(CameraMovement direction, float deltaTime);
 };

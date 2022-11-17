@@ -1,9 +1,10 @@
 #ifndef DIMENSION_H
 #define DIMENSION_H
 
-enum DIMENSION {
+enum TYPE {
     TWO,
-    THREE
+    THREE,
+    EFFECT
 };
 
 #endif
