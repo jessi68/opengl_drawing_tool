@@ -12,7 +12,7 @@ protected:
 	vector<Polygon*> polygons;
 	static int COORDINATE_NUMBER;
 public:
-    void render(Shader * shader);
+    void render(unique_ptr<Shader>& shader);
 	Coordinate(GLfloat colors[3][3]);
 	Coordinate();
 	virtual ~Coordinate();

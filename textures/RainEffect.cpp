@@ -4,7 +4,6 @@ RainEffect::RainEffect(int raindropNumber)
 {
 	this->raindropNumber = raindropNumber;
     this->previousTime = static_cast<float>(glfwGetTime());
-    this->shader = NULL;
     this->velocity = -0.1;
     this->halfOfRainDropSize =  0.05;
     this->interval = this->halfOfRainDropSize * 2 + 0.05;
@@ -42,11 +41,6 @@ RainEffect::RainEffect(int raindropNumber)
 	}
 }
 
-void RainEffect::setShader(Shader* shader)
-{
-    this->shader = shader;
-}
-
 RainEffect::~RainEffect()
 {
     for (int i = 0; i < this->raindropNumber; i++) {
@@ -54,20 +48,21 @@ RainEffect::~RainEffect()
     }
 }
 
-void RainEffect::render()
+void RainEffect::render(unique_ptr<Shader>& shader)
 {
     float currentTime = static_cast<float>(glfwGetTime());
     float deltaTime = currentTime - this->previousTime;
     glm::mat4 matrix;
+
 	for (int i = 0; i < this->raindropNumber; i++) {
         this->rainDrops[i]->translation(0, deltaTime * velocity,0);
         matrix = this->rainDrops[i]->getMatrix();
-        cout << matrix[3][1] << " yyyy" << endl;
+
         if (abs(matrix[3][1] - -0.14) < 0.01) {
             this->rainDrops[i]->setPosition(-0.47 + this->interval * i, 0.46, 0);
         }
-        this->rainDrops[i]->setShaderValue(this->shader);
-        this->rainDrops[i]->render();
+        this->rainDrops[i]->setShaderValue(shader);
+        this->rainDrops[i]->render(shader);
         
 	}
     this->previousTime = currentTime;

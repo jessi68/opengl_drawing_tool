@@ -12,12 +12,12 @@ Coordinate::Coordinate(GLfloat colors[3][3]) {
 	}
 }
 
-void Coordinate::render(Shader * shader) {
-	this->lines.render();
+void Coordinate::render(unique_ptr<Shader>& shader) {
+	this->lines.render(shader);
 	
 	for (int i = 0; i < Coordinate::COORDINATE_NUMBER; i++) {
 		shader->setVec3("color", colors[i][0], colors[i][1], colors[i][2]);
-		this->polygons[i]->render();
+		this->polygons[i]->render(shader);
 	}
 } 
 

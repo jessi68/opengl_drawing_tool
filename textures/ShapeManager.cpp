@@ -3,9 +3,10 @@
 #include "ScreenProperty.h"
 
 void ShapeManager::initialize() {
-    this->basic2DShader = new Shader("2d_shape.vert", "2d_shape.frag");
-    this->basic3DShader = new Shader("3d_shape.vert", "3d_shape.frag");
-
+    // unique_ptr 만드는 단순한 방법 
+    this->basic2DShader = make_unique<Shader>("2d_shape.vert", "2d_shape.frag");
+    this->basic3DShader = make_unique<Shader>("3d_shape.vert", "3d_shape.frag");
+    
     this->camera = new Camera(glm::vec3(-0.3f, 0.2f, 1.0f));
     this->projection = glm::perspective(glm::radians(camera->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     this->polygonNumber = 0;
@@ -27,13 +28,7 @@ ShapeManager* ShapeManager::getInstance() {
 }
 
 void ShapeManager::Destroy() {
-   
-    /*for (auto polygons : polygonsToRender) {
-        delete polygons;
-    }*/
-  
     delete ShapeManager::drawingManager->camera;
-    delete ShapeManager::drawingManager->basic2DShader;
     delete ShapeManager::drawingManager;
 }
 
@@ -69,10 +64,10 @@ void ShapeManager::renderAll()
         for (int i = 0; i < this->polygonNumber; i++) {
 
             polygons[i]->setShaderValue(this->basic2DShader);
-            polygons[i]->render();
+            polygons[i]->render(this->basic2DShader);
 
             if (this->selectedPolygonIndex == i) {
-                // 소수를 정확하게 표현할 수 없는 것 때문에 scaling 하고 원래대로 복원하는 건 어려움. 
+                // 소수를 정확하게 표현할 수 없는 것 때문에 scaling 하고 원래대로 복원하는 건 어려움. 1/1.2 같은 거 계산하기 어려움. 
 
                 // 시간될 때 아래 코드 리팩토링하기 matrix scali
                 glm::mat4 changedMatrix = polygons[i]->getMatrix();
@@ -88,7 +83,7 @@ void ShapeManager::renderAll()
                 changedMatrix = transMatrix * changedMatrix;
                 basic2DShader->setMat4("transformation", changedMatrix);
                 basic2DShader->setVec3("color", 1.0, 1.0, 0.0);
-                polygons[i]->render();
+                polygons[i]->render(basic2DShader);
             }
         }
     }
@@ -113,19 +108,18 @@ void ShapeManager::renderAll()
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
         if (this->rainEffect != NULL) {
-            this->rainEffect->setShader(this->basic3DShader);
-            this->rainEffect->render();
+            this->rainEffect->render(this->basic3DShader);
         }
         else {
 
             for (int i = 0; i < this->threeDimensionalFigureNumber; i++) {
                 glStencilFunc(GL_ALWAYS, i + 1, 1);
 
-                threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
-                threeDimensionFigures[i]->render();
+                threeDimensionFigures[i]->setShaderValue(basic3DShader);
+                threeDimensionFigures[i]->render(basic3DShader);
 
                 if (this->selectedThreeDimensionalFigureIndex == i) {
-                    threeDimensionFigures[i]->setShaderValue(this->basic3DShader);
+                    threeDimensionFigures[i]->setShaderValue(basic3DShader);
                     this->basic3DShader->setVec3("color", 0.0, 0.0, 0.0);
                     threeDimensionFigures[i]->renderCoordinate(basic3DShader);
                 }

@@ -348,7 +348,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
             glReadPixels(x, SCR_HEIGHT - y - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
             cout << "depth " << depth << endl;
 
-            // 배경, ui 등을 클릭했을 때
+            // 배경, ui 등 도형이 아닌 부분들을 클릭했을 때
             if (index == 0) {
                 return;
             }

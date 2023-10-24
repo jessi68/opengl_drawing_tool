@@ -217,6 +217,7 @@
     <None Include="3d_shape.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Downloads\happy.png" />

@@ -18,9 +18,9 @@ private:
 	vector<ThreeDimensionalFigure*> threeDimensionFigures;
 	vector<Polygon*> countourPolygons;
 	RainEffect* rainEffect;
-	// 객체 두번 생성하는 거 막으려고 포인터로 함
-	Shader* basic2DShader;
-	Shader* basic3DShader;
+	// 객체 두번 생성하는 거 막으려고 포인터로 함 unique_ptr
+	unique_ptr<Shader> basic2DShader;
+	unique_ptr<Shader> basic3DShader;
 	int polygonNumber;
 	int threeDimensionalFigureNumber;
 	int selectedPolygonIndex;

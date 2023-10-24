@@ -31,8 +31,8 @@ public:
 	void copyFrom(const Shape& src);
 	Shape(const Shape& src);
 	Shape& operator=(const Shape& shape);
-	virtual void render();
-	void setShaderValue(Shader* shader);
+	virtual void render(unique_ptr<Shader>& shader);
+	void setShaderValue(unique_ptr<Shader>& shader);
 	glm::mat4 getMatrix();
 };
 

@@ -72,7 +72,7 @@ void ThreeDimensionalFigure::transformation(glm::mat3 newMatrix)
     this->matrix = rotationMatrix * this->matrix;
 }
 
-void ThreeDimensionalFigure::renderCoordinate(Shader * shader)
+void ThreeDimensionalFigure::renderCoordinate(unique_ptr<Shader>& shader)
 {
 	this->coordinate->render(shader);
 }

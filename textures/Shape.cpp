@@ -38,7 +38,6 @@ Shape::Shape()
 
 Shape::Shape(float* vertices, vector<unsigned int> & vertexAttributeNumbers, unsigned int eachAttributeNumber, unsigned int totalVerticeNumber)
 {
-	cout << "is this called" << endl;
  	this->verticeAttributes = vertices;
 	this->eachAttributeNumber = eachAttributeNumber;
 	this->totalVerticeNumber = totalVerticeNumber;
@@ -96,14 +95,14 @@ Shape& Shape::operator=(const Shape& shape)
 	return *this;
 }
 
-void Shape::render()
+void Shape::render(unique_ptr<Shader>& shader)
 {
-	cout << "shape rendered" << endl;
 	glBindVertexArray(this->vao);
+	// polygon 으로 옮기기 
 	glDrawElements(GL_TRIANGLES, this->totalIndiceNumber, GL_UNSIGNED_INT, 0);
 }
 
-void Shape::setShaderValue(Shader* shader)
+void Shape::setShaderValue(unique_ptr<Shader>& shader)
 {
 	shader->setVec3("color", color);
 	shader->setMat4("transformation", this->matrix);

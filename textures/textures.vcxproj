@@ -203,6 +203,7 @@
     <None Include="2d_shape.vert" />
     <None Include="3d_shape.frag" />
     <None Include="3d_shape.vert" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Downloads\happy.png" />

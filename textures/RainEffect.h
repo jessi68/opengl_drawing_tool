@@ -7,7 +7,6 @@
 class RainEffect : public Shape
 {
 private:
-	Shader* shader;
 	int raindropNumber;
 	float halfOfRainDropSize;
 	float previousTime;
@@ -16,9 +15,8 @@ private:
 	vector<Cube*> rainDrops;
 public:
 	RainEffect(int rainDropNumber = 4);
-	void setShader(Shader* shader);
 	~RainEffect();
-	virtual void render();
+	virtual void render(unique_ptr<Shader>& shader);
 };
 
 #endif
